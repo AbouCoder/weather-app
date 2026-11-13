@@ -41,7 +41,7 @@ export default function RootLayout({
       >
         <Effects />
         <TemperatureUnitProvider>
-          <header className="fixed top-0 left-0 w-full z-10">
+          <header className="fixed top-0 left-0 w-full z-10 bg-header backdrop-blur-sm">
             <div className="max-w-xl mx-auto py-8 px-6 flex justify-between items-center">
               <h1 className="text-base font-semibold text-muted-foreground hover:text-foreground text-shadow-sm">
                 <Link href="/">Weather</Link>
