@@ -51,16 +51,8 @@ export const cities: City[] = [
   { name: "Auckland", slug: "auckland", lat: -36.8485, lon: 174.7633 },
 ];
 
-// Shown on the home page for everyone; users add more with the Add city dialog
-export const defaultCitySlugs = [
-  "islamabad",
-  "london",
-  "new-york",
-  "berlin",
-  "new-delhi",
-  "beijing",
-  "tokyo",
-];
+// The home page list when the user has no saved cities yet
+export const defaultCitySlugs = ["islamabad", "london", "new-york"];
 
 export function getCityBySlug(slug: string): City | undefined {
   return cities.find((city) => city.slug === slug);

@@ -12,7 +12,8 @@ interface SavedCityCardProps {
 
 type WeatherState = WeatherData | "loading" | "error";
 
-// Added cities are only known in the browser, so their weather is fetched here
+// The home page list lives in localStorage, so each card fetches its weather
+// in the browser
 export function SavedCityCard({ city }: SavedCityCardProps) {
   const [weather, setWeather] = useState<WeatherState>("loading");
 

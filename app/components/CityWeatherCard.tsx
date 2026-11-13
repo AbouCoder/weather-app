@@ -10,7 +10,7 @@ interface CityWeatherCardProps {
   weather: WeatherData;
 }
 
-// Shared by the server-rendered default cities and the ones users add
+// The weather card for one city on the home page
 export function CityWeatherCard({ city, weather }: CityWeatherCardProps) {
   const Icon = getWeatherIcon(weather.current.weatherCode);
   const description = getWeatherDescription(weather.current.weatherCode);
