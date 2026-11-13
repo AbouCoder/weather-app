@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { locations, getLocationBySlug } from "../data/locations";
+import { cities, getCityBySlug } from "@/data/cities";
 import { getWeather } from "../actions/actions";
 import { getWeatherIcon } from "../lib/weatherIcons";
 import { getWeatherDescription } from "../lib/weatherDescriptions";
@@ -17,8 +17,8 @@ import { WeatherHighlight } from "../components/WeatherHighlight";
 import { hourlyForecastPlaceholder } from "../data/hourlyForecast";
 
 export function generateStaticParams() {
-  return locations.map((location) => ({
-    slug: location.slug,
+  return cities.map((city) => ({
+    slug: city.slug,
   }));
 }
 
@@ -48,13 +48,13 @@ function LocationWeatherFallback() {
 
 async function LocationWeather({ params }: PageProps) {
   const { slug } = await params;
-  const location = getLocationBySlug(slug);
+  const city = getCityBySlug(slug);
 
-  if (!location) {
+  if (!city) {
     notFound();
   }
 
-  const weather = await getWeather(location.lat, location.lon);
+  const weather = await getWeather(city.lat, city.lon);
   const todayForecast = weather.daily[0];
   const Icon = getWeatherIcon(weather.current.weatherCode);
   const description = getWeatherDescription(weather.current.weatherCode);
@@ -71,7 +71,7 @@ async function LocationWeather({ params }: PageProps) {
         <header className="flex flex-col gap-8">
           <section className="flex flex-col">
             <h2 className="text-xl font-semibold text-shadow-md">
-              {location.name}
+              {city.name}
             </h2>
             <p className="text-base text-muted-foreground text-shadow-sm">
               {formatDate(todayForecast.date)}{" "}

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { locations } from "./data/locations";
+import { cities } from "@/data/cities";
 import { getWeather } from "./actions/actions";
 import { getWeatherIcon } from "./lib/weatherIcons";
 import { getWeatherDescription } from "./lib/weatherDescriptions";
@@ -19,13 +19,13 @@ export default function Home() {
 function LocationListFallback() {
   return (
     <ul className="flex flex-col gap-4">
-      {locations.map((location) => (
+      {cities.map((city) => (
         <li
-          key={location.slug}
+          key={city.slug}
           className="py-6 px-7 rounded-2xl bg-white/5 inset-shadow-xs inset-shadow-white/20"
         >
           <h2 className="text-base font-semibold text-shadow-md">
-            {location.name}
+            {city.name}
           </h2>
           <p className="text-sm text-muted-foreground text-shadow-sm">
             Loading weather…
@@ -38,15 +38,15 @@ function LocationListFallback() {
 
 async function LocationList() {
   const weatherData = await Promise.all(
-    locations.map(async (location) => {
-      const weather = await getWeather(location.lat, location.lon);
-      return { location, weather };
+    cities.map(async (city) => {
+      const weather = await getWeather(city.lat, city.lon);
+      return { city, weather };
     })
   );
 
   return (
     <ul className="flex flex-col gap-4">
-      {weatherData.map(({ location, weather }) => {
+      {weatherData.map(({ city, weather }) => {
         const Icon = getWeatherIcon(weather.current.weatherCode);
         const description = getWeatherDescription(weather.current.weatherCode);
         const isNight = isNightTime(
@@ -56,10 +56,10 @@ async function LocationList() {
         );
 
         return (
-          <li key={location.slug}>
+          <li key={city.slug}>
             <LocationCard
-              slug={location.slug}
-              name={location.name}
+              slug={city.slug}
+              name={city.name}
               description={description}
               temperature={weather.current.temperature}
               timezone={weather.current.timezone}
