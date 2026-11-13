@@ -1,4 +1,5 @@
 import { HourlyForecastData } from "../lib/types";
+import { Temperature } from "./Temperature";
 import { getWeatherIcon } from "../lib/weatherIcons";
 import { formatClockTime, formatHour } from "../lib/utils";
 
@@ -76,8 +77,8 @@ export function WeatherHighlight({ forecast }: WeatherHighlightProps) {
                   </span>
                   <Icon isNight={isNight(hour.time)} className="size-8" />
                   <span className="sr-only">
-                    {hour.temperature}°, {hour.precipitationProbability}% chance
-                    of precipitation
+                    <Temperature celsius={hour.temperature} />,{" "}
+                    {hour.precipitationProbability}% chance of precipitation
                   </span>
                 </li>
               );
@@ -120,7 +121,7 @@ export function WeatherHighlight({ forecast }: WeatherHighlightProps) {
                 className="absolute -translate-x-1/2 text-sm font-medium text-shadow-sm"
                 style={{ left: points[index].x, top: points[index].y - 24 }}
               >
-                {hour.temperature}°
+                <Temperature celsius={hour.temperature} />
               </span>
             ))}
           </div>

@@ -18,7 +18,7 @@ export async function getWeather(
 
   return {
     current: {
-      temperature: Math.round(data.current.temperature_2m),
+      temperature: data.current.temperature_2m,
       weatherCode: data.current.weather_code,
       timezone: data.timezone,
       sunrise: data.daily.sunrise[0],
@@ -26,8 +26,8 @@ export async function getWeather(
     },
     daily: data.daily.time.map((date: string, index: number) => ({
       date,
-      maxTemp: Math.round(data.daily.temperature_2m_max[index]),
-      minTemp: Math.round(data.daily.temperature_2m_min[index]),
+      maxTemp: data.daily.temperature_2m_max[index],
+      minTemp: data.daily.temperature_2m_min[index],
       weatherCode: data.daily.weather_code[index],
     })),
   };
