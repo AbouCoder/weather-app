@@ -12,6 +12,8 @@ export const cities: City[] = [
   { name: "Seoul", slug: "seoul", lat: 37.5665, lon: 126.978 },
   { name: "Singapore", slug: "singapore", lat: 1.3521, lon: 103.8198 },
   { name: "Mumbai", slug: "mumbai", lat: 19.076, lon: 72.8777 },
+  { name: "New Delhi", slug: "new-delhi", lat: 28.6139, lon: 77.209 },
+  { name: "Beijing", slug: "beijing", lat: 39.9042, lon: 116.4074 },
   { name: "Bangkok", slug: "bangkok", lat: 13.7563, lon: 100.5018 },
   { name: "Dubai", slug: "dubai", lat: 25.2048, lon: 55.2708 },
 
@@ -47,6 +49,17 @@ export const cities: City[] = [
   // Oceania
   { name: "Sydney", slug: "sydney", lat: -33.8688, lon: 151.2093 },
   { name: "Auckland", slug: "auckland", lat: -36.8485, lon: 174.7633 },
+];
+
+// Shown on the home page for everyone; users add more with the Add city dialog
+export const defaultCitySlugs = [
+  "islamabad",
+  "london",
+  "new-york",
+  "berlin",
+  "new-delhi",
+  "beijing",
+  "tokyo",
 ];
 
 export function getCityBySlug(slug: string): City | undefined {

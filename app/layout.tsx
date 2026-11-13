@@ -25,6 +25,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // The font variable sits on <html>, where the page font is resolved
+      className={inter.variable}
       data-temperature-unit="celsius"
       // The inline script below may change the unit before React hydrates
       suppressHydrationWarning
@@ -35,7 +37,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} antialiased bg-linear-to-b from-slate-900 to-slate-950 text-foreground`}
+        className="antialiased bg-linear-to-b from-slate-900 to-slate-950 text-foreground"
       >
         <Effects />
         <TemperatureUnitProvider>

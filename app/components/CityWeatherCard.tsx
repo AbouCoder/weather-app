@@ -1,0 +1,35 @@
+import { City } from "@/data/cities";
+import { WeatherData } from "../lib/types";
+import { getWeatherIcon } from "../lib/weatherIcons";
+import { getWeatherDescription } from "../lib/weatherDescriptions";
+import { isNightTime } from "../lib/utils";
+import { LocationCard } from "./LocationCard";
+
+interface CityWeatherCardProps {
+  city: City;
+  weather: WeatherData;
+}
+
+// Shared by the server-rendered default cities and the ones users add
+export function CityWeatherCard({ city, weather }: CityWeatherCardProps) {
+  const Icon = getWeatherIcon(weather.current.weatherCode);
+  const description = getWeatherDescription(weather.current.weatherCode);
+  const isNight = isNightTime(
+    weather.current.timezone,
+    weather.current.sunrise,
+    weather.current.sunset,
+  );
+
+  return (
+    <LocationCard
+      slug={city.slug}
+      name={city.name}
+      description={description}
+      temperature={weather.current.temperature}
+      timezone={weather.current.timezone}
+      weatherCode={weather.current.weatherCode}
+      Icon={Icon}
+      isNight={isNight}
+    />
+  );
+}
