@@ -26,3 +26,15 @@ export interface WeatherData {
   current: CurrentWeather;
   daily: DailyForecast[];
 }
+export interface HourlyForecast {
+  time: string;
+  temperature: number;
+  weatherCode: number;
+  precipitationProbability: number;
+}
+
+export interface HourlyForecastData {
+  sunrise: string;
+  sunset: string;
+  hourly: HourlyForecast[];
+}

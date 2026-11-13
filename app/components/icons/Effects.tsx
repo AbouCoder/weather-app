@@ -64,6 +64,16 @@ export function Effects() {
           <stop offset="0%" stopColor="var(--color-yellow-300)" />
           <stop offset="100%" stopColor="var(--color-amber-500)" />
         </linearGradient>
+        <linearGradient
+          id="temperatureAreaGradient"
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="1"
+        >
+          <stop offset="0%" stopColor="white" stopOpacity={0.25} />
+          <stop offset="100%" stopColor="white" stopOpacity={0} />
+        </linearGradient>
 
         {/* Rain and snow are thin strokes, and a perfectly vertical line has a
             zero-width bounding box, so these use the icon's own coordinates. */}

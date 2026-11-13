@@ -36,3 +36,15 @@ export function getCurrentTimeInTimezone(timezone: string): string {
   
     return currentTime < sunriseTime || currentTime > sunsetTime;
   }
+  // Reads the hour straight from a local "YYYY-MM-DDTHH:MM" string, so the
+  // label doesn't shift with the server's own timezone
+  export function formatHour(dateTime: string): string {
+    const hour = Number(dateTime.slice(11, 13));
+    return `${hour % 12 || 12} ${hour < 12 ? "AM" : "PM"}`;
+  }
+
+  export function formatClockTime(dateTime: string): string {
+    const hour = Number(dateTime.slice(11, 13));
+    const minute = dateTime.slice(14, 16);
+    return `${hour % 12 || 12}:${minute} ${hour < 12 ? "AM" : "PM"}`;
+  }

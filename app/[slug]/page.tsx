@@ -13,6 +13,8 @@ import {
 } from "../lib/utils";
 import { DaysListItem } from "../components/DaysListItem";
 import { CurrentWeatherSummary } from "../components/CurrentWeatherSummary";
+import { WeatherHighlight } from "../components/WeatherHighlight";
+import { hourlyForecastPlaceholder } from "../data/hourlyForecast";
 
 export function generateStaticParams() {
   return locations.map((location) => ({
@@ -104,6 +106,8 @@ async function LocationWeather({ params }: PageProps) {
             })}
           </ul>
         </section>
+
+        <WeatherHighlight forecast={hourlyForecastPlaceholder} />
       </div>
     </div>
   );
