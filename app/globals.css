@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Matches while the user has picked Fahrenheit with the TemperatureToggle */
+@custom-variant fahrenheit (&:where([data-temperature-unit="fahrenheit"] *));
+
 :root {
   --background: #ffffff;
   --foreground: rgb(255, 255, 255);

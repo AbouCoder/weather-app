@@ -2,7 +2,8 @@
 
 import { useTemperatureUnit } from "../context/TemperatureUnitContext";
 
-// Switches the unit every <Temperature> in the app is shown in
+// Switches the unit every <Temperature> in the app is shown in. The knob
+// follows the <html> attribute too, so it starts in the saved position.
 export function TemperatureToggle() {
   const { unit, setUnit } = useTemperatureUnit();
   const isFahrenheit = unit === "fahrenheit";
@@ -30,11 +31,10 @@ export function TemperatureToggle() {
       </span>
       <span
         aria-hidden
-        className={`absolute top-1 left-1 flex items-center justify-center w-8 h-7 rounded-full bg-linear-to-b from-white to-slate-200 shadow-md shadow-black/30 text-sm font-semibold text-slate-900 transition-transform duration-300 ease-out ${
-          isFahrenheit ? "translate-x-8" : "translate-x-0"
-        }`}
+        className="absolute top-1 left-1 flex items-center justify-center w-8 h-7 rounded-full bg-linear-to-b from-white to-slate-200 shadow-md shadow-black/30 text-sm font-semibold text-slate-900 transition-transform duration-300 ease-out translate-x-0 fahrenheit:translate-x-8"
       >
-        {isFahrenheit ? "°F" : "°C"}
+        <span className="fahrenheit:hidden">°C</span>
+        <span className="hidden fahrenheit:inline">°F</span>
       </span>
     </button>
   );

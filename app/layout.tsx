@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Effects } from "./components/icons/Effects";
 import { TemperatureToggle } from "./components/TemperatureToggle";
 import { TemperatureUnitProvider } from "./context/TemperatureUnitContext";
+import { applySavedTemperatureUnitScript } from "./lib/temperature";
 
 export const inter = Inter({
   subsets: ["latin"],
@@ -22,7 +23,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      data-temperature-unit="celsius"
+      // The inline script below may change the unit before React hydrates
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{ __html: applySavedTemperatureUnitScript }}
+        />
+      </head>
       <body
         className={`${inter.variable} antialiased bg-linear-to-b from-slate-900 to-slate-950 text-foreground`}
       >

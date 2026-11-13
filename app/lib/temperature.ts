@@ -14,3 +14,10 @@ export function formatTemperature(
 ): string {
   return `${Math.round(convertTemperature(celsius, unit))}°`;
 }
+
+export const TEMPERATURE_UNIT_STORAGE_KEY = "temperatureUnit";
+export const TEMPERATURE_UNIT_ATTRIBUTE = "data-temperature-unit";
+
+// Runs in <head> before the first paint, so pages open in the saved unit
+// without flashing Celsius first
+export const applySavedTemperatureUnitScript = `(function(){try{var u=localStorage.getItem("${TEMPERATURE_UNIT_STORAGE_KEY}");if(u==="celsius"||u==="fahrenheit")document.documentElement.setAttribute("${TEMPERATURE_UNIT_ATTRIBUTE}",u)}catch(e){}})()`;
