@@ -1,7 +1,7 @@
-import { HourlyForecastData } from "../lib/types";
+import { HourlyForecast } from "../lib/types";
 
 // Hardcoded placeholder for the next 24 hours until hourly data is fetched
-export const hourlyForecastPlaceholder: HourlyForecastData = {
+export const hourlyForecastPlaceholder: HourlyForecast = {
   sunrise: "2026-11-14T06:47",
   sunset: "2026-11-13T17:04",
   hourly: [

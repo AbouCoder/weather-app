@@ -1,10 +1,10 @@
-import { HourlyForecastData } from "../lib/types";
+import { HourlyForecast } from "../lib/types";
 import { Temperature } from "./Temperature";
 import { getWeatherIcon } from "../lib/weatherIcons";
-import { formatClockTime, formatHour } from "../lib/utils";
+import { formatHourMinute, formatHourLabel } from "../lib/dateTime";
 
-interface WeatherHighlightProps {
-  forecast: HourlyForecastData;
+interface HourlyForecastChartProps {
+  forecast: HourlyForecast;
 }
 
 const COLUMN_WIDTH = 56;
@@ -15,38 +15,42 @@ const CHART_PADDING_BOTTOM = 12;
 const MAX_BAR_HEIGHT = 32;
 const HOUR_MS = 60 * 60 * 1000;
 
-export function WeatherHighlight({ forecast }: WeatherHighlightProps) {
+export function HourlyForecastChart({ forecast }: HourlyForecastChartProps) {
   const { hourly, sunrise, sunset } = forecast;
-  const width = hourly.length * COLUMN_WIDTH;
-  const start = new Date(hourly[0].time).getTime();
+  const chartWidth = hourly.length * COLUMN_WIDTH;
+  const firstHourMs = new Date(hourly[0].time).getTime();
 
   const temperatures = hourly.map((hour) => hour.temperature);
-  const minTemp = Math.min(...temperatures);
-  const range = Math.max(...temperatures) - minTemp || 1;
+  const minCelsius = Math.min(...temperatures);
+  const temperatureRange = Math.max(...temperatures) - minCelsius || 1;
 
-  const points = hourly.map((hour, index) => ({
+  const temperaturePoints = hourly.map((hour, index) => ({
     x: (index + 0.5) * COLUMN_WIDTH,
     y:
       CHART_PADDING_TOP +
-      (1 - (hour.temperature - minTemp) / range) *
+      (1 - (hour.temperature - minCelsius) / temperatureRange) *
         (CHART_HEIGHT - CHART_PADDING_TOP - CHART_PADDING_BOTTOM),
   }));
-  const line = points.map(({ x, y }) => `${x},${y}`).join(" ");
-  const area = `${points[0].x},${CHART_HEIGHT} ${line} ${points.at(-1)!.x},${CHART_HEIGHT}`;
+  const linePoints = temperaturePoints
+    .map(({ x, y }) => `${x},${y}`)
+    .join(" ");
+  const firstX = temperaturePoints[0].x;
+  const lastX = temperaturePoints.at(-1)!.x;
+  const areaPoints = `${firstX},${CHART_HEIGHT} ${linePoints} ${lastX},${CHART_HEIGHT}`;
 
   // Places a time on the same axis as the hourly points
-  const getOffset = (time: string) =>
-    ((new Date(time).getTime() - start) / HOUR_MS + 0.5) * COLUMN_WIDTH;
+  const getXForTime = (time: string) =>
+    ((new Date(time).getTime() - firstHourMs) / HOUR_MS + 0.5) * COLUMN_WIDTH;
 
-  const markers = [
+  const sunMarkers = [
     { label: "Sunset", time: sunset },
     { label: "Sunrise", time: sunrise },
   ].filter(({ time }) => {
-    const offset = getOffset(time);
-    return offset >= 0 && offset <= width;
+    const offset = getXForTime(time);
+    return offset >= 0 && offset <= chartWidth;
   });
 
-  const isNight = (time: string) =>
+  const isNightHour = (time: string) =>
     sunset < sunrise
       ? time >= sunset && time < sunrise
       : time < sunrise || time >= sunset;
@@ -62,7 +66,7 @@ export function WeatherHighlight({ forecast }: WeatherHighlightProps) {
         aria-label="Hourly temperature, conditions and chance of precipitation"
       >
         {/* Bottom padding leaves room for the sunrise and sunset labels */}
-        <div className="relative pb-8" style={{ width }}>
+        <div className="relative pb-8" style={{ width: chartWidth }}>
           <ol className="flex">
             {hourly.map((hour, index) => {
               const Icon = getWeatherIcon(hour.weatherCode);
@@ -73,9 +77,9 @@ export function WeatherHighlight({ forecast }: WeatherHighlightProps) {
                   style={{ width: COLUMN_WIDTH }}
                 >
                   <span className="text-sm text-muted-foreground text-shadow-sm">
-                    {index === 0 ? "Now" : formatHour(hour.time)}
+                    {index === 0 ? "Now" : formatHourLabel(hour.time)}
                   </span>
-                  <Icon isNight={isNight(hour.time)} className="size-8" />
+                  <Icon isNight={isNightHour(hour.time)} className="size-8" />
                   <span className="sr-only">
                     <Temperature celsius={hour.temperature} />,{" "}
                     {hour.precipitationProbability}% chance of precipitation
@@ -91,13 +95,16 @@ export function WeatherHighlight({ forecast }: WeatherHighlightProps) {
             aria-hidden
           >
             <svg
-              width={width}
+              width={chartWidth}
               height={CHART_HEIGHT}
               className="absolute inset-0 overflow-visible"
             >
-              <polygon points={area} fill="url(#temperatureAreaGradient)" />
+              <polygon
+                points={areaPoints}
+                fill="url(#temperatureAreaGradient)"
+              />
               <polyline
-                points={line}
+                points={linePoints}
                 fill="none"
                 stroke="white"
                 strokeOpacity={0.8}
@@ -105,7 +112,7 @@ export function WeatherHighlight({ forecast }: WeatherHighlightProps) {
                 strokeLinejoin="round"
                 strokeLinecap="round"
               />
-              {points.map(({ x, y }, index) => (
+              {temperaturePoints.map(({ x, y }, index) => (
                 <circle
                   key={hourly[index].time}
                   cx={x}
@@ -119,7 +126,10 @@ export function WeatherHighlight({ forecast }: WeatherHighlightProps) {
               <span
                 key={hour.time}
                 className="absolute -translate-x-1/2 text-sm font-medium text-shadow-sm"
-                style={{ left: points[index].x, top: points[index].y - 24 }}
+                style={{
+                  left: temperaturePoints[index].x,
+                  top: temperaturePoints[index].y - 24,
+                }}
               >
                 <Temperature celsius={hour.temperature} />
               </span>
@@ -153,15 +163,15 @@ export function WeatherHighlight({ forecast }: WeatherHighlightProps) {
             ))}
           </ol>
 
-          {markers.map(({ label, time }) => (
+          {sunMarkers.map(({ label, time }) => (
             <div
               key={label}
               className="absolute top-0 bottom-0 flex flex-col items-start pointer-events-none"
-              style={{ left: getOffset(time) }}
+              style={{ left: getXForTime(time) }}
             >
               <div className="flex-1 border-l border-dashed border-white/40" />
               <span className="-translate-x-1/2 mt-1 whitespace-nowrap rounded-full bg-white/10 px-2 py-0.5 text-xs text-shadow-sm inset-shadow-xs inset-shadow-white/20">
-                {label} {formatClockTime(time)}
+                {label} {formatHourMinute(time)}
               </span>
             </div>
           ))}

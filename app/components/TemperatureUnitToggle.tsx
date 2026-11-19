@@ -6,7 +6,7 @@ import { useTemperatureUnit } from "../context/TemperatureUnitContext";
 // Switches the unit every <Temperature> in the app is shown in. The thumb and
 // the active label follow the <html> attribute too, so they start in the saved
 // position before React hydrates.
-export function TemperatureToggle() {
+export function TemperatureUnitToggle() {
   const { unit, setUnit } = useTemperatureUnit();
 
   return (

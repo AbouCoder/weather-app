@@ -42,16 +42,21 @@ function writeSavedSlugs(slugs: string[]) {
 export interface RemovedCity {
   slug: string;
   // The list as it was just before the city was removed
-  before: string[];
+  slugsBeforeRemoval: string[];
 }
 
 // Puts a removed city back in front of the first city that followed it
 // before and is still listed, so its position survives other removals,
 // undone in any order
-function restoreSlug(current: string[], { slug, before }: RemovedCity) {
+function restoreSlug(
+  current: string[],
+  { slug, slugsBeforeRemoval }: RemovedCity,
+) {
   if (current.includes(slug)) return current;
 
-  const following = before.slice(before.indexOf(slug) + 1);
+  const following = slugsBeforeRemoval.slice(
+    slugsBeforeRemoval.indexOf(slug) + 1,
+  );
   const nextSlug = following.find((other) => current.includes(other));
   const index = nextSlug ? current.indexOf(nextSlug) : current.length;
 
@@ -98,7 +103,7 @@ export function useSavedCities() {
   // Returns what undo needs, or null if the city isn't listed
   function remove(slug: string): RemovedCity | null {
     if (!slugs?.includes(slug)) return null;
-    const removed = { slug, before: slugs };
+    const removed = { slug, slugsBeforeRemoval: slugs };
     setSlugs((current) => current && current.filter((s) => s !== slug));
     return removed;
   }

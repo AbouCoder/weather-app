@@ -1,11 +1,11 @@
 "use server";
 
-import { WeatherData } from "../lib/types";
+import { WeatherForecast } from "../lib/types";
 
-export async function getWeather(
+export async function fetchWeatherForecast(
   lat: number,
   lon: number
-): Promise<WeatherData> {
+): Promise<WeatherForecast> {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code,sunrise,sunset&timezone=auto&forecast_days=7`;
 
   const response = await fetch(url);
@@ -26,8 +26,8 @@ export async function getWeather(
     },
     daily: data.daily.time.map((date: string, index: number) => ({
       date,
-      maxTemp: data.daily.temperature_2m_max[index],
-      minTemp: data.daily.temperature_2m_min[index],
+      maxCelsius: data.daily.temperature_2m_max[index],
+      minCelsius: data.daily.temperature_2m_min[index],
       weatherCode: data.daily.weather_code[index],
     })),
   };

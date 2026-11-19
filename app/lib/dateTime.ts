@@ -7,7 +7,7 @@ export function getCurrentTimeInTimezone(timezone: string): string {
     });
   }
   
-  export function formatDate(dateString: string): string {
+  export function formatDayAndMonth(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB", {
       day: "numeric",
@@ -15,7 +15,10 @@ export function getCurrentTimeInTimezone(timezone: string): string {
     });
   }
   
-  export function getDayName(dateString: string, index: number): string {
+  export function getForecastDayLabel(
+    dateString: string,
+    index: number,
+  ): string {
     if (index === 0) return "Today";
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB", { weekday: "long" });
@@ -38,12 +41,12 @@ export function getCurrentTimeInTimezone(timezone: string): string {
   }
   // Reads the hour straight from a local "YYYY-MM-DDTHH:MM" string, so the
   // label doesn't shift with the server's own timezone
-  export function formatHour(dateTime: string): string {
+  export function formatHourLabel(dateTime: string): string {
     const hour = Number(dateTime.slice(11, 13));
     return `${hour % 12 || 12} ${hour < 12 ? "AM" : "PM"}`;
   }
 
-  export function formatClockTime(dateTime: string): string {
+  export function formatHourMinute(dateTime: string): string {
     const hour = Number(dateTime.slice(11, 13));
     const minute = dateTime.slice(14, 16);
     return `${hour % 12 || 12}:${minute} ${hour < 12 ? "AM" : "PM"}`;

@@ -1,11 +1,14 @@
-export function getWeatherBackground(code: number, isNight: boolean): string {
+export function getWeatherGradientClasses(
+  weatherCode: number,
+  isNight: boolean,
+): string {
   // WMO Weather interpretation codes
-  if (code >= 0 && code <= 2) {
+  if (weatherCode >= 0 && weatherCode <= 2) {
     return isNight
       ? "from-blue-950 to-blue-800"
       : "from-sky-600 to-blue-400";
   }
-  if (code >= 95 && code <= 99) {
+  if (weatherCode >= 95 && weatherCode <= 99) {
     return "from-slate-800 to-slate-950";
   }
 

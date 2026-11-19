@@ -24,7 +24,7 @@ export interface CityCardControlsProps {
 const controlClassName =
   "inline-flex size-10 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-white/10 outline-none focus-visible:ring-2 focus-visible:ring-white/40 transition-colors [&_svg]:size-5 [&_svg]:drop-shadow-md";
 
-export function DragHandle({
+export function CityDragHandle({
   name,
   dragHandle,
 }: Pick<CityCardControlsProps, "name" | "dragHandle">) {
@@ -44,7 +44,7 @@ export function DragHandle({
   );
 }
 
-export function DeleteButton({
+export function DeleteCityButton({
   name,
   onDelete,
 }: Pick<CityCardControlsProps, "name" | "onDelete">) {

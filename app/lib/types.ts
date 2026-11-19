@@ -15,26 +15,26 @@ export interface CurrentWeather {
   sunset: string;
 }
 
-export interface DailyForecast {
+export interface DayForecast {
   date: string;
-  maxTemp: number;
-  minTemp: number;
+  maxCelsius: number;
+  minCelsius: number;
   weatherCode: number;
 }
 
-export interface WeatherData {
+export interface WeatherForecast {
   current: CurrentWeather;
-  daily: DailyForecast[];
+  daily: DayForecast[];
 }
-export interface HourlyForecast {
+export interface HourForecast {
   time: string;
   temperature: number;
   weatherCode: number;
   precipitationProbability: number;
 }
 
-export interface HourlyForecastData {
+export interface HourlyForecast {
   sunrise: string;
   sunset: string;
-  hourly: HourlyForecast[];
+  hourly: HourForecast[];
 }

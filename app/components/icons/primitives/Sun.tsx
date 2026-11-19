@@ -19,7 +19,7 @@ interface SunProps {
           cx={192 + x}
           cy={192 + y}
           r={104 * scale}
-          fill="url(#yellowGradient)"
+          fill="url(#sunGradient)"
           filter="url(#whiteInnerShadow)"
         />
       </>

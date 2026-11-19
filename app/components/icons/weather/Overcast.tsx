@@ -1,10 +1,10 @@
 import { WeatherIconProps } from "../../../lib/types";
-import { WeatherIcon } from "../WeatherIcon";
+import { WeatherIconFrame } from "../WeatherIconFrame";
 import { Cloud } from "../primitives";
 
 export function Overcast({ isNight, className }: WeatherIconProps) {
   return (
-    <WeatherIcon className={className}>
+    <WeatherIconFrame className={className}>
       <g className="animate-hover [--animation-delay:-2.5s]">
         <Cloud
           x={50}
@@ -16,6 +16,6 @@ export function Overcast({ isNight, className }: WeatherIconProps) {
       <g className="animate-hover">
         <Cloud y={20} shade={isNight ? "medium" : "light"} />
       </g>
-    </WeatherIcon>
+    </WeatherIconFrame>
   );
 }

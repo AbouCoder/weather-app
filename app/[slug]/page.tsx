@@ -1,19 +1,19 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { cities, getCityBySlug } from "@/data/cities";
-import { getWeather } from "../actions/actions";
+import { fetchWeatherForecast } from "../actions/weather";
 import { getWeatherIcon } from "../lib/weatherIcons";
 import { getWeatherDescription } from "../lib/weatherDescriptions";
-import { getWeatherBackground } from "../lib/weatherBackgrounds";
+import { getWeatherGradientClasses } from "../lib/weatherBackgrounds";
 import {
   getCurrentTimeInTimezone,
-  formatDate,
-  getDayName,
+  formatDayAndMonth,
+  getForecastDayLabel,
   isNightTime,
-} from "../lib/utils";
-import { DaysListItem } from "../components/DaysListItem";
+} from "../lib/dateTime";
+import { DailyForecastRow } from "../components/DailyForecastRow";
 import { CurrentWeatherSummary } from "../components/CurrentWeatherSummary";
-import { WeatherHighlight } from "../components/WeatherHighlight";
+import { HourlyForecastChart } from "../components/HourlyForecastChart";
 import { hourlyForecastPlaceholder } from "../data/hourlyForecast";
 
 export function generateStaticParams() {
@@ -26,15 +26,15 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default function LocationPage({ params }: PageProps) {
+export default function CityPage({ params }: PageProps) {
   return (
-    <Suspense fallback={<LocationWeatherFallback />}>
-      <LocationWeather params={params} />
+    <Suspense fallback={<CityWeatherFallback />}>
+      <CityWeather params={params} />
     </Suspense>
   );
 }
 
-function LocationWeatherFallback() {
+function CityWeatherFallback() {
   return (
     <div className="min-h-screen">
       <div className="max-w-xl mx-auto py-24 px-6">
@@ -46,7 +46,7 @@ function LocationWeatherFallback() {
   );
 }
 
-async function LocationWeather({ params }: PageProps) {
+async function CityWeather({ params }: PageProps) {
   const { slug } = await params;
   const city = getCityBySlug(slug);
 
@@ -54,7 +54,7 @@ async function LocationWeather({ params }: PageProps) {
     notFound();
   }
 
-  const weather = await getWeather(city.lat, city.lon);
+  const weather = await fetchWeatherForecast(city.lat, city.lon);
   const todayForecast = weather.daily[0];
   const Icon = getWeatherIcon(weather.current.weatherCode);
   const description = getWeatherDescription(weather.current.weatherCode);
@@ -63,7 +63,10 @@ async function LocationWeather({ params }: PageProps) {
     weather.current.sunrise,
     weather.current.sunset
   );
-  const background = getWeatherBackground(weather.current.weatherCode, isNight);
+  const background = getWeatherGradientClasses(
+    weather.current.weatherCode,
+    isNight,
+  );
 
   return (
     <div className={`min-h-screen bg-linear-to-b ${background}`}>
@@ -74,7 +77,7 @@ async function LocationWeather({ params }: PageProps) {
               {city.name}
             </h2>
             <p className="text-base text-muted-foreground text-shadow-sm">
-              {formatDate(todayForecast.date)}{" "}
+              {formatDayAndMonth(todayForecast.date)}{" "}
               {getCurrentTimeInTimezone(weather.current.timezone)}
             </p>
           </section>
@@ -95,11 +98,11 @@ async function LocationWeather({ params }: PageProps) {
             {weather.daily.map((day, index) => {
               const DayIcon = getWeatherIcon(day.weatherCode);
               return (
-                <DaysListItem
+                <DailyForecastRow
                   key={day.date}
-                  day={getDayName(day.date, index)}
-                  maxTemp={day.maxTemp}
-                  minTemp={day.minTemp}
+                  dayLabel={getForecastDayLabel(day.date, index)}
+                  maxCelsius={day.maxCelsius}
+                  minCelsius={day.minCelsius}
                   Icon={DayIcon}
                 />
               );
@@ -107,7 +110,7 @@ async function LocationWeather({ params }: PageProps) {
           </ul>
         </section>
 
-        <WeatherHighlight forecast={hourlyForecastPlaceholder} />
+        <HourlyForecastChart forecast={hourlyForecastPlaceholder} />
       </div>
     </div>
   );

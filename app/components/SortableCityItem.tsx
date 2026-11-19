@@ -3,7 +3,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { City } from "@/data/cities";
-import { SavedCityCard } from "./SavedCityCard";
+import { CityWeatherLoader } from "./CityWeatherLoader";
 
 interface SortableCityItemProps {
   city: City;
@@ -34,7 +34,7 @@ export function SortableCityItem({ city, onDelete }: SortableCityItemProps) {
         isDragging ? "relative z-10 scale-[1.02] opacity-90 drop-shadow-2xl" : ""
       }
     >
-      <SavedCityCard
+      <CityWeatherLoader
         city={city}
         dragHandle={{ attributes, listeners, setActivatorNodeRef }}
         onDelete={onDelete}

@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* Matches while the user has picked Fahrenheit with the TemperatureToggle */
+/* Matches while the user has picked Fahrenheit with the TemperatureUnitToggle */
 @custom-variant fahrenheit (&:where([data-temperature-unit="fahrenheit"] *));
 
 /* shadcn's dark: styles only apply under a .dark class, which the app doesn't

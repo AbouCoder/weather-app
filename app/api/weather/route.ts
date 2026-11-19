@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { getCityBySlug } from "@/data/cities";
-import { getWeather } from "../../actions/actions";
+import { fetchWeatherForecast } from "../../actions/weather";
 
 // Weather for one city by slug, for cities the user added in the browser
 export async function GET(request: NextRequest) {
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    return Response.json(await getWeather(city.lat, city.lon));
+    return Response.json(await fetchWeatherForecast(city.lat, city.lon));
   } catch {
     return Response.json({ error: "Weather unavailable" }, { status: 502 });
   }

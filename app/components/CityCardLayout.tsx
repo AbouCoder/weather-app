@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { Temperature } from "./Temperature";
-import { getCurrentTimeInTimezone } from "../lib/utils";
+import { getCurrentTimeInTimezone } from "../lib/dateTime";
 import { WeatherIcon } from "../lib/types";
-import { getWeatherBackground } from "../lib/weatherBackgrounds";
+import { getWeatherGradientClasses } from "../lib/weatherBackgrounds";
 import {
   CityCardControlsProps,
-  DeleteButton,
-  DragHandle,
+  DeleteCityButton,
+  CityDragHandle,
 } from "./CityCardControls";
 
-interface LocationCardProps extends CityCardControlsProps {
+interface CityCardLayoutProps extends CityCardControlsProps {
   slug: string;
   description: string;
   temperature: number;
@@ -19,7 +19,7 @@ interface LocationCardProps extends CityCardControlsProps {
   isNight?: boolean;
 }
 
-export function LocationCard({
+export function CityCardLayout({
   slug,
   name,
   description,
@@ -30,8 +30,8 @@ export function LocationCard({
   isNight,
   dragHandle,
   onDelete,
-}: LocationCardProps) {
-  const background = getWeatherBackground(weatherCode, isNight ?? false);
+}: CityCardLayoutProps) {
+  const background = getWeatherGradientClasses(weatherCode, isNight ?? false);
 
   // The grip and bin sit beside the link, not inside it, so they never
   // open the detail page
@@ -39,7 +39,7 @@ export function LocationCard({
     <div
       className={`group flex items-center gap-1 px-2 rounded-2xl shadow-lg shadow-black/30 inset-shadow-xs inset-shadow-white/20 bg-linear-to-b transition-opacity duration-150 ${background}`}
     >
-      <DragHandle name={name} dragHandle={dragHandle} />
+      <CityDragHandle name={name} dragHandle={dragHandle} />
       <Link
         href={`/${slug}`}
         className="flex-1 min-w-0 flex justify-between items-center gap-4 py-6 px-2 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-white/40"
@@ -60,7 +60,7 @@ export function LocationCard({
           />
         </div>
       </Link>
-      <DeleteButton name={name} onDelete={onDelete} />
+      <DeleteCityButton name={name} onDelete={onDelete} />
     </div>
   );
 }

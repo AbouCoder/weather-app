@@ -1,10 +1,10 @@
 import { WeatherIconProps } from "../../../lib/types";
-import { WeatherIcon } from "../WeatherIcon";
+import { WeatherIconFrame } from "../WeatherIconFrame";
 import { Cloud, Moon, Snowflake, Sun } from "../primitives";
 
 export function Snow({ isNight, className }: WeatherIconProps) {
   return (
-    <WeatherIcon className={className}>
+    <WeatherIconFrame className={className}>
       {isNight ? (
         <Moon x={70} y={-80} scale={0.55} />
       ) : (
@@ -22,6 +22,6 @@ export function Snow({ isNight, className }: WeatherIconProps) {
           <Snowflake x={64} />
         </g>
       </g>
-    </WeatherIcon>
+    </WeatherIconFrame>
   );
 }

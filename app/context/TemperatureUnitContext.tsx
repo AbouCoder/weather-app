@@ -21,7 +21,7 @@ interface TemperatureUnitContextValue {
 const TemperatureUnitContext =
   createContext<TemperatureUnitContextValue | null>(null);
 
-const CHANGE_EVENT = "temperatureunitchange";
+const UNIT_CHANGE_EVENT = "temperatureunitchange";
 
 function isTemperatureUnit(value: unknown): value is TemperatureUnit {
   return value === "celsius" || value === "fahrenheit";
@@ -39,10 +39,10 @@ function readSavedUnit(): TemperatureUnit | null {
 // The unit lives on <html> so CSS can show it before React hydrates
 function applyUnit(unit: TemperatureUnit) {
   document.documentElement.setAttribute(TEMPERATURE_UNIT_ATTRIBUTE, unit);
-  window.dispatchEvent(new Event(CHANGE_EVENT));
+  window.dispatchEvent(new Event(UNIT_CHANGE_EVENT));
 }
 
-function setUnit(unit: TemperatureUnit) {
+function saveUnit(unit: TemperatureUnit) {
   try {
     localStorage.setItem(TEMPERATURE_UNIT_STORAGE_KEY, unit);
   } catch {
@@ -52,7 +52,7 @@ function setUnit(unit: TemperatureUnit) {
   applyUnit(unit);
 }
 
-function subscribe(onChange: () => void) {
+function subscribeToUnit(onChange: () => void) {
   // Keeps other open tabs in step with the saved choice
   const onStorage = (event: StorageEvent) => {
     if (
@@ -63,37 +63,41 @@ function subscribe(onChange: () => void) {
     }
   };
 
-  window.addEventListener(CHANGE_EVENT, onChange);
+  window.addEventListener(UNIT_CHANGE_EVENT, onChange);
   window.addEventListener("storage", onStorage);
   return () => {
-    window.removeEventListener(CHANGE_EVENT, onChange);
+    window.removeEventListener(UNIT_CHANGE_EVENT, onChange);
     window.removeEventListener("storage", onStorage);
   };
 }
 
-function getSnapshot(): TemperatureUnit {
+function getUnitSnapshot(): TemperatureUnit {
   const unit = document.documentElement.getAttribute(
     TEMPERATURE_UNIT_ATTRIBUTE,
   );
   return isTemperatureUnit(unit) ? unit : "celsius";
 }
 
-function getServerSnapshot(): TemperatureUnit {
+function getServerUnitSnapshot(): TemperatureUnit {
   return "celsius";
 }
 
 export function TemperatureUnitProvider({ children }: { children: ReactNode }) {
-  const unit = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const unit = useSyncExternalStore(
+    subscribeToUnit,
+    getUnitSnapshot,
+    getServerUnitSnapshot,
+  );
 
   // In development, Strict Mode's remount resets <html> to its JSX attributes,
   // clearing the one the inline script set. A no-op in production.
   useLayoutEffect(() => {
     const saved = readSavedUnit();
-    if (saved && saved !== getSnapshot()) applyUnit(saved);
+    if (saved && saved !== getUnitSnapshot()) applyUnit(saved);
   }, []);
 
   return (
-    <TemperatureUnitContext value={{ unit, setUnit }}>
+    <TemperatureUnitContext value={{ unit, setUnit: saveUnit }}>
       {children}
     </TemperatureUnitContext>
   );

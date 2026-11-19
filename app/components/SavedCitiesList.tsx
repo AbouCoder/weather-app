@@ -32,7 +32,7 @@ function cityName(id: UniqueIdentifier) {
   return getCityBySlug(String(id))?.name ?? String(id);
 }
 
-export function UserCities() {
+export function SavedCitiesList() {
   const { slugs, add, remove, restore, move } = useSavedCities();
 
   const sensors = useSensors(
@@ -49,21 +49,22 @@ export function UserCities() {
     .filter((city): city is City => city !== undefined);
 
   // Screen reader messages that name the city and its position
-  const position = (id: UniqueIdentifier) =>
+  const describePosition = (id: UniqueIdentifier) =>
     `position ${(slugs ?? []).indexOf(String(id)) + 1} of ${cities.length}`;
   const announcements: Announcements = {
     onDragStart: ({ active }) =>
-      `Picked up ${cityName(active.id)}, ${position(active.id)}.`,
+      `Picked up ${cityName(active.id)}, ${describePosition(active.id)}.`,
     onDragOver: ({ active, over }) =>
       over
-        ? `${cityName(active.id)} is over ${position(over.id)}.`
+        ? `${cityName(active.id)} is over ${describePosition(over.id)}.`
         : `${cityName(active.id)} is no longer over a position.`,
     onDragEnd: ({ active, over }) =>
       over
-        ? `${cityName(active.id)} dropped at ${position(over.id)}.`
+        ? `${cityName(active.id)} dropped at ${describePosition(over.id)}.`
         : `${cityName(active.id)} dropped.`,
     onDragCancel: ({ active }) =>
-      `Reordering cancelled. ${cityName(active.id)} is back at ${position(active.id)}.`,
+      `Reordering cancelled. ${cityName(active.id)} is back at ` +
+      `${describePosition(active.id)}.`,
   };
 
   function handleDragEnd({ active, over }: DragEndEvent) {
@@ -86,7 +87,7 @@ export function UserCities() {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h2 className="text-base font-semibold text-shadow-md">Cities</h2>
-        <AddCityDialog listedSlugs={slugs ?? []} onAdd={add} />
+        <AddCityDialog savedSlugs={slugs ?? []} onAdd={add} />
       </div>
 
       {slugs && cities.length === 0 ? (
@@ -99,7 +100,7 @@ export function UserCities() {
               Add a city to see its weather here.
             </p>
           </div>
-          <AddCityDialog listedSlugs={slugs} onAdd={add} />
+          <AddCityDialog savedSlugs={slugs} onAdd={add} />
         </div>
       ) : (
         <DndContext

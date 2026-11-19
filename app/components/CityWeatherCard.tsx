@@ -1,14 +1,14 @@
 import { City } from "@/data/cities";
-import { WeatherData } from "../lib/types";
+import { WeatherForecast } from "../lib/types";
 import { getWeatherIcon } from "../lib/weatherIcons";
 import { getWeatherDescription } from "../lib/weatherDescriptions";
-import { isNightTime } from "../lib/utils";
-import { LocationCard } from "./LocationCard";
+import { isNightTime } from "../lib/dateTime";
+import { CityCardLayout } from "./CityCardLayout";
 import { CityCardControlsProps } from "./CityCardControls";
 
 interface CityWeatherCardProps extends Omit<CityCardControlsProps, "name"> {
   city: City;
-  weather: WeatherData;
+  weather: WeatherForecast;
 }
 
 // The weather card for one city on the home page
@@ -27,7 +27,7 @@ export function CityWeatherCard({
   );
 
   return (
-    <LocationCard
+    <CityCardLayout
       slug={city.slug}
       name={city.name}
       description={description}

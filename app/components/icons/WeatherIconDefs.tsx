@@ -1,7 +1,7 @@
 // Shared gradients and filters referenced by the weather icons via url(#id).
 // Hidden with zero size rather than display: none, which stops some browsers
 // from resolving the references.
-export function Effects() {
+export function WeatherIconDefs() {
   return (
     <svg
       width={0}
@@ -11,7 +11,7 @@ export function Effects() {
       focusable="false"
     >
       <defs>
-        <linearGradient id="yellowGradient" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="sunGradient" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="var(--color-yellow-400)" />
           <stop offset="100%" stopColor="var(--color-amber-600)" />
         </linearGradient>

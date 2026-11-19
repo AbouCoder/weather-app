@@ -24,15 +24,15 @@ import {
 
 interface AddCityDialogProps {
   // Cities already on the home page, which aren't offered again
-  listedSlugs: string[];
+  savedSlugs: string[];
   onAdd: (slug: string) => void;
 }
 
-export function AddCityDialog({ listedSlugs, onAdd }: AddCityDialogProps) {
+export function AddCityDialog({ savedSlugs, onAdd }: AddCityDialogProps) {
   const [open, setOpen] = useState(false);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
 
-  const options = cities.filter((city) => !listedSlugs.includes(city.slug));
+  const unsavedCities = cities.filter((city) => !savedSlugs.includes(city.slug));
   const selectedCity = cities.find((city) => city.slug === selectedSlug);
 
   function handleOpenChange(nextOpen: boolean) {
@@ -76,7 +76,7 @@ export function AddCityDialog({ listedSlugs, onAdd }: AddCityDialogProps) {
                 No cities found.
               </CommandEmpty>
               <CommandGroup>
-                {options.map((city) => (
+                {unsavedCities.map((city) => (
                   <CommandItem
                     key={city.slug}
                     value={city.name}

@@ -9,15 +9,28 @@ import {
   Thunderstorm,
 } from "../components/icons";
 
-export function getWeatherIcon(code: number): WeatherIcon {
+export function getWeatherIcon(weatherCode: number): WeatherIcon {
   // WMO Weather interpretation codes
-  if (code === 0) return ClearSky;
-  if (code === 1) return MainlyClear;
-  if (code === 2) return PartlyCloudy;
-  if (code === 3 || code === 45 || code === 48) return Overcast;
-  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return Rainy;
-  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return Snow;
-  if (code >= 95 && code <= 99) return Thunderstorm;
+  if (weatherCode === 0) return ClearSky;
+  if (weatherCode === 1) return MainlyClear;
+  if (weatherCode === 2) return PartlyCloudy;
+  if (weatherCode === 3 || weatherCode === 45 || weatherCode === 48) {
+    return Overcast;
+  }
+  if (
+    (weatherCode >= 51 && weatherCode <= 67) ||
+    (weatherCode >= 80 && weatherCode <= 82)
+  ) {
+    return Rainy;
+  }
+  if (
+    (weatherCode >= 71 && weatherCode <= 77) ||
+    weatherCode === 85 ||
+    weatherCode === 86
+  ) {
+    return Snow;
+  }
+  if (weatherCode >= 95 && weatherCode <= 99) return Thunderstorm;
 
   return PartlyCloudy;
 }
