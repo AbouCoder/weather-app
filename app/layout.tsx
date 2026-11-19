@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { Toaster } from "@/components/ui/sonner";
 import { Effects } from "./components/icons/Effects";
 import { TemperatureToggle } from "./components/TemperatureToggle";
 import { TemperatureUnitProvider } from "./context/TemperatureUnitContext";
@@ -51,6 +52,7 @@ export default function RootLayout({
           </header>
           <main className="min-h-screen">{children}</main>
         </TemperatureUnitProvider>
+        <Toaster />
       </body>
     </html>
   );

@@ -1,74 +1,136 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { City, defaultCitySlugs, getCityBySlug } from "@/data/cities";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type Announcements,
+  type UniqueIdentifier,
+} from "@dnd-kit/core";
+import {
+  restrictToParentElement,
+  restrictToVerticalAxis,
+} from "@dnd-kit/modifiers";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { toast } from "sonner";
+import { City, getCityBySlug } from "@/data/cities";
+import { useSavedCities } from "../hooks/useSavedCities";
 import { AddCityDialog } from "./AddCityDialog";
-import { SavedCityCard } from "./SavedCityCard";
+import { SortableCityItem } from "./SortableCityItem";
 
-const STORAGE_KEY = "savedCities";
+const UNDO_DURATION_MS = 5000;
 
-// Falls back to the default cities when nothing usable is saved
-function readSavedSlugs(): string[] {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
-    const slugs = Array.isArray(saved)
-      ? saved.filter((slug) => typeof slug === "string" && getCityBySlug(slug))
-      : [];
-    return slugs.length > 0 ? slugs : defaultCitySlugs;
-  } catch {
-    return defaultCitySlugs;
-  }
-}
-
-function writeSavedSlugs(slugs: string[]) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(slugs));
-  } catch {
-    // Storage can be unavailable (private mode, blocked site data); the list
-    // still works until the page is reloaded
-  }
+function cityName(id: UniqueIdentifier) {
+  return getCityBySlug(String(id))?.name ?? String(id);
 }
 
 export function UserCities() {
-  // null until the saved list has been read in the browser
-  const [slugs, setSlugs] = useState<string[] | null>(null);
+  const { slugs, add, remove, restore, move } = useSavedCities();
 
-  // localStorage only exists in the browser, so the list is read after mount;
-  // reading it during render would mismatch the server HTML
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time load from an external store on mount
-    setSlugs(readSavedSlugs());
-  }, []);
-
-  // Keeps localStorage in step with every change to the list. Skipped until
-  // the load above has run, so it never overwrites the saved list
-  useEffect(() => {
-    if (slugs) writeSavedSlugs(slugs);
-  }, [slugs]);
+  const sensors = useSensors(
+    // A small move is needed before a drag starts, so a tap on the grip
+    // doesn't count as one
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
   const cities = (slugs ?? [])
     .map(getCityBySlug)
     .filter((city): city is City => city !== undefined);
 
-  function addCity(slug: string) {
-    setSlugs((current) =>
-      !current || current.includes(slug) ? current : [...current, slug],
-    );
+  // Screen reader messages that name the city and its position
+  const position = (id: UniqueIdentifier) =>
+    `position ${(slugs ?? []).indexOf(String(id)) + 1} of ${cities.length}`;
+  const announcements: Announcements = {
+    onDragStart: ({ active }) =>
+      `Picked up ${cityName(active.id)}, ${position(active.id)}.`,
+    onDragOver: ({ active, over }) =>
+      over
+        ? `${cityName(active.id)} is over ${position(over.id)}.`
+        : `${cityName(active.id)} is no longer over a position.`,
+    onDragEnd: ({ active, over }) =>
+      over
+        ? `${cityName(active.id)} dropped at ${position(over.id)}.`
+        : `${cityName(active.id)} dropped.`,
+    onDragCancel: ({ active }) =>
+      `Reordering cancelled. ${cityName(active.id)} is back at ${position(active.id)}.`,
+  };
+
+  function handleDragEnd({ active, over }: DragEndEvent) {
+    // Dropping where it started, or outside the list, changes nothing
+    if (!over || active.id === over.id) return;
+    move(String(active.id), String(over.id));
+  }
+
+  function handleDelete(city: City) {
+    const removed = remove(city.slug);
+    if (!removed) return;
+
+    toast(`${city.name} removed`, {
+      duration: UNDO_DURATION_MS,
+      action: { label: "Undo", onClick: () => restore(removed) },
+    });
   }
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h2 className="text-base font-semibold text-shadow-md">Cities</h2>
-        <AddCityDialog listedSlugs={slugs ?? []} onAdd={addCity} />
+        <AddCityDialog listedSlugs={slugs ?? []} onAdd={add} />
       </div>
-      <ul className="flex flex-col gap-4">
-        {cities.map((city) => (
-          <li key={city.slug}>
-            <SavedCityCard city={city} />
-          </li>
-        ))}
-      </ul>
+
+      {slugs && cities.length === 0 ? (
+        <div className="flex flex-col items-center gap-4 py-12 px-7 rounded-2xl bg-white/5 inset-shadow-xs inset-shadow-white/20 text-center">
+          <div>
+            <p className="text-base font-semibold text-shadow-md">
+              No cities yet
+            </p>
+            <p className="text-sm text-muted-foreground text-shadow-sm">
+              Add a city to see its weather here.
+            </p>
+          </div>
+          <AddCityDialog listedSlugs={slugs} onAdd={add} />
+        </div>
+      ) : (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+          accessibility={{
+            announcements,
+            screenReaderInstructions: {
+              draggable:
+                "To reorder a city, press Space or Enter on its reorder button, use the up and down arrow keys to move it, then press Space or Enter again to drop it. Press Escape to cancel.",
+            },
+          }}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={slugs ?? []}
+            strategy={verticalListSortingStrategy}
+          >
+            <ul className="flex flex-col gap-4">
+              {cities.map((city) => (
+                <SortableCityItem
+                  key={city.slug}
+                  city={city}
+                  onDelete={() => handleDelete(city)}
+                />
+              ))}
+            </ul>
+          </SortableContext>
+        </DndContext>
+      )}
     </div>
   );
 }

@@ -5,8 +5,9 @@ import { City } from "@/data/cities";
 import { WeatherData } from "../lib/types";
 import { CityCardPlaceholder } from "./CityCardPlaceholder";
 import { CityWeatherCard } from "./CityWeatherCard";
+import { CityCardControlsProps } from "./CityCardControls";
 
-interface SavedCityCardProps {
+interface SavedCityCardProps extends Omit<CityCardControlsProps, "name"> {
   city: City;
 }
 
@@ -14,7 +15,11 @@ type WeatherState = WeatherData | "loading" | "error";
 
 // The home page list lives in localStorage, so each card fetches its weather
 // in the browser
-export function SavedCityCard({ city }: SavedCityCardProps) {
+export function SavedCityCard({
+  city,
+  dragHandle,
+  onDelete,
+}: SavedCityCardProps) {
   const [weather, setWeather] = useState<WeatherState>("loading");
 
   useEffect(() => {
@@ -37,15 +42,27 @@ export function SavedCityCard({ city }: SavedCityCardProps) {
     };
   }, [city.slug]);
 
+  const controls = { dragHandle, onDelete };
+
   if (weather === "loading") {
-    return <CityCardPlaceholder name={city.name} message="Loading weather…" />;
+    return (
+      <CityCardPlaceholder
+        name={city.name}
+        message="Loading weather…"
+        {...controls}
+      />
+    );
   }
 
   if (weather === "error") {
     return (
-      <CityCardPlaceholder name={city.name} message="Weather unavailable" />
+      <CityCardPlaceholder
+        name={city.name}
+        message="Weather unavailable"
+        {...controls}
+      />
     );
   }
 
-  return <CityWeatherCard city={city} weather={weather} />;
+  return <CityWeatherCard city={city} weather={weather} {...controls} />;
 }
