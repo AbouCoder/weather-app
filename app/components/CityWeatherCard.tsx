@@ -1,8 +1,6 @@
 import { City } from "@/data/cities";
 import { WeatherForecast } from "../lib/types";
-import { getWeatherIcon } from "../lib/weatherIcons";
-import { getWeatherDescription } from "../lib/weatherDescriptions";
-import { isNightTime } from "../lib/dateTime";
+import { getCurrentConditions } from "../lib/currentConditions";
 import { CityCardLayout } from "./CityCardLayout";
 import { CityCardControlsProps } from "./CityCardControls";
 
@@ -18,12 +16,8 @@ export function CityWeatherCard({
   dragHandle,
   onDelete,
 }: CityWeatherCardProps) {
-  const Icon = getWeatherIcon(weather.current.weatherCode);
-  const description = getWeatherDescription(weather.current.weatherCode);
-  const isNight = isNightTime(
-    weather.current.timezone,
-    weather.current.sunrise,
-    weather.current.sunset,
+  const { Icon, description, isNight, gradientClasses } = getCurrentConditions(
+    weather.current,
   );
 
   return (
@@ -33,7 +27,7 @@ export function CityWeatherCard({
       description={description}
       temperature={weather.current.temperature}
       timezone={weather.current.timezone}
-      weatherCode={weather.current.weatherCode}
+      gradientClasses={gradientClasses}
       Icon={Icon}
       isNight={isNight}
       dragHandle={dragHandle}

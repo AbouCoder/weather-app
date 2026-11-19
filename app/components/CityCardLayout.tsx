@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Temperature } from "./Temperature";
 import { getCurrentTimeInTimezone } from "../lib/dateTime";
 import { WeatherIcon } from "../lib/types";
-import { getWeatherGradientClasses } from "../lib/weatherBackgrounds";
 import {
   CityCardControlsProps,
   DeleteCityButton,
@@ -14,7 +13,8 @@ interface CityCardLayoutProps extends CityCardControlsProps {
   description: string;
   temperature: number;
   timezone: string;
-  weatherCode: number;
+  // Tailwind gradient classes for the card background
+  gradientClasses: string;
   Icon: WeatherIcon;
   isNight?: boolean;
 }
@@ -25,19 +25,17 @@ export function CityCardLayout({
   description,
   temperature,
   timezone,
-  weatherCode,
+  gradientClasses,
   Icon,
   isNight,
   dragHandle,
   onDelete,
 }: CityCardLayoutProps) {
-  const background = getWeatherGradientClasses(weatherCode, isNight ?? false);
-
   // The grip and bin sit beside the link, not inside it, so they never
   // open the detail page
   return (
     <div
-      className={`group flex items-center gap-1 px-2 rounded-2xl shadow-lg shadow-black/30 inset-shadow-xs inset-shadow-white/20 bg-linear-to-b transition-opacity duration-150 ${background}`}
+      className={`group flex items-center gap-1 px-2 rounded-2xl shadow-lg shadow-black/30 inset-shadow-xs inset-shadow-white/20 bg-linear-to-b transition-opacity duration-150 ${gradientClasses}`}
     >
       <CityDragHandle name={name} dragHandle={dragHandle} />
       <Link
