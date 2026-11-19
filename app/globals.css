@@ -18,9 +18,11 @@
   --muted-foreground: rgba(255, 255, 255, 0.8);
   --border: rgba(255, 255, 255, 0.1);
   --header: rgb(0 0 0 / 10%);
+  /* Dialogs and toasts float over the page in this frosted dark glass */
+  --surface-overlay: rgb(15 23 42 / 90%);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: var(--surface-overlay);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
@@ -30,7 +32,8 @@
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  /* Focus rings use ring-ring/50, which comes out as white at 40% */
+  --ring: rgb(255 255 255 / 80%);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -55,6 +58,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-header: var(--header);
+  --color-surface-overlay: var(--surface-overlay);
 
   /* Fonts */
   --font-sans: var(--font-inter);
@@ -205,4 +209,21 @@
   html {
     @apply font-sans;
   }
+}
+
+/* Shared looks, so every surface and button is built the same way */
+
+/* The soft white highlight along the top edge of every glass surface */
+@utility glass-edge {
+  @apply inset-shadow-xs inset-shadow-white/20;
+}
+
+/* A glass surface lifted off the page: cards, dialogs, toasts, pill buttons */
+@utility glass-raised {
+  @apply shadow-lg shadow-black/30 inset-shadow-xs inset-shadow-white/20;
+}
+
+/* The solid white fill of primary buttons and the unit switch's thumb */
+@utility primary-fill {
+  @apply bg-linear-to-b from-white to-slate-200 text-slate-900 shadow-md shadow-black/30;
 }

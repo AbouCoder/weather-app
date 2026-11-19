@@ -52,13 +52,13 @@ export function AddCityDialog({ savedSlugs, onAdd }: AddCityDialogProps) {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger
         render={
-          <Button className="h-9 gap-1.5 rounded-full px-4 bg-white/10 hover:bg-white/15 text-foreground text-shadow-sm shadow-lg shadow-black/30 inset-shadow-xs inset-shadow-white/20 focus-visible:ring-white/40" />
+          <Button variant="glass" size="pill" />
         }
       >
         <PlusIcon />
         Add city
       </DialogTrigger>
-      <DialogContent className="rounded-2xl bg-slate-900/90 supports-backdrop-filter:backdrop-blur-xl ring-white/10 shadow-lg shadow-black/30 inset-shadow-xs inset-shadow-white/20">
+      <DialogContent className="rounded-2xl supports-backdrop-filter:backdrop-blur-xl ring-white/10 glass-raised">
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <DialogHeader>
             <DialogTitle className="text-base font-semibold text-shadow-md">
@@ -69,7 +69,7 @@ export function AddCityDialog({ savedSlugs, onAdd }: AddCityDialogProps) {
             </DialogDescription>
           </DialogHeader>
 
-          <Command className="bg-white/5 ring-1 ring-white/10 inset-shadow-xs inset-shadow-white/10">
+          <Command className="bg-white/5 ring-1 ring-white/10 glass-edge">
             <CommandInput placeholder="Search cities…" />
             <CommandList>
               <CommandEmpty className="text-muted-foreground">
@@ -96,8 +96,9 @@ export function AddCityDialog({ savedSlugs, onAdd }: AddCityDialogProps) {
           <DialogFooter>
             <Button
               type="submit"
+              variant="primary"
+              size="pill"
               disabled={!selectedCity}
-              className="h-9 rounded-full px-4 bg-linear-to-b from-white to-slate-200 text-slate-900 shadow-md shadow-black/30 hover:opacity-90"
             >
               {selectedCity ? `Add ${selectedCity.name}` : "Add city"}
             </Button>

@@ -7,9 +7,9 @@ interface EmptyCitiesStateProps {
 // Shown in place of the list once every city has been removed
 export function EmptyCitiesState({ onAdd }: EmptyCitiesStateProps) {
   return (
-    <div className="flex flex-col items-center gap-4 py-12 px-7 rounded-2xl bg-white/5 inset-shadow-xs inset-shadow-white/20 text-center">
+    <div className="flex flex-col items-center gap-4 py-12 px-4 rounded-2xl bg-white/5 glass-raised text-center">
       <div>
-        <p className="text-base font-semibold text-shadow-md">No cities yet</p>
+        <h3 className="text-base font-semibold text-shadow-md">No cities yet</h3>
         <p className="text-sm text-muted-foreground text-shadow-sm">
           Add a city to see its weather here.
         </p>

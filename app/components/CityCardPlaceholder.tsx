@@ -3,6 +3,7 @@ import {
   DeleteCityButton,
   CityDragHandle,
 } from "./CityCardControls";
+import { CityCardShell } from "./CityCardShell";
 
 interface CityCardPlaceholderProps extends CityCardControlsProps {
   message: string;
@@ -17,15 +18,15 @@ export function CityCardPlaceholder({
   onDelete,
 }: CityCardPlaceholderProps) {
   return (
-    <div className="flex items-center gap-1 px-2 rounded-2xl bg-white/5 inset-shadow-xs inset-shadow-white/20">
+    <CityCardShell className="bg-white/5">
       <CityDragHandle name={name} dragHandle={dragHandle} />
       <div className="flex-1 min-w-0 py-6 px-2">
-        <h2 className="text-base font-semibold text-shadow-md">{name}</h2>
+        <h3 className="text-base font-semibold text-shadow-md">{name}</h3>
         <p className="text-sm text-muted-foreground text-shadow-sm">
           {message}
         </p>
       </div>
       <DeleteCityButton name={name} onDelete={onDelete} />
-    </div>
+    </CityCardShell>
   );
 }

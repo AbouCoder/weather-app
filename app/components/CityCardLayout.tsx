@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { Temperature } from "./Temperature";
 import { getCurrentTimeInTimezone } from "../lib/dateTime";
 import { WeatherIcon } from "../lib/types";
@@ -7,6 +8,7 @@ import {
   DeleteCityButton,
   CityDragHandle,
 } from "./CityCardControls";
+import { CityCardShell } from "./CityCardShell";
 
 interface CityCardLayoutProps extends CityCardControlsProps {
   slug: string;
@@ -34,16 +36,19 @@ export function CityCardLayout({
   // The grip and bin sit beside the link, not inside it, so they never
   // open the detail page
   return (
-    <div
-      className={`group flex items-center gap-1 px-2 rounded-2xl shadow-lg shadow-black/30 inset-shadow-xs inset-shadow-white/20 bg-linear-to-b transition-opacity duration-150 ${gradientClasses}`}
+    <CityCardShell
+      className={cn(
+        "group bg-linear-to-b transition-opacity duration-150",
+        gradientClasses,
+      )}
     >
       <CityDragHandle name={name} dragHandle={dragHandle} />
       <Link
         href={`/${slug}`}
-        className="flex-1 min-w-0 flex justify-between items-center gap-4 py-6 px-2 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+        className="flex-1 min-w-0 flex justify-between items-center gap-4 py-6 px-2 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
       >
         <div className="min-w-0">
-          <h2 className="text-base font-semibold text-shadow-md">{name}</h2>
+          <h3 className="text-base font-semibold text-shadow-md">{name}</h3>
           <p className="text-sm text-muted-foreground text-shadow-sm">
             {getCurrentTimeInTimezone(timezone)} · {description}
           </p>
@@ -59,6 +64,6 @@ export function CityCardLayout({
         </div>
       </Link>
       <DeleteCityButton name={name} onDelete={onDelete} />
-    </div>
+    </CityCardShell>
   );
 }

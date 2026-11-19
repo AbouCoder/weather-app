@@ -4,8 +4,10 @@ import { cities, getCityBySlug } from "@/data/cities";
 import { fetchWeatherForecast } from "../actions/weather";
 import { getCurrentConditions } from "../lib/currentConditions";
 import { CityHeading } from "../components/CityHeading";
+import { CityWeatherSkeleton } from "../components/CityWeatherSkeleton";
 import { CurrentWeatherSummary } from "../components/CurrentWeatherSummary";
 import { HourlyForecastChart } from "../components/HourlyForecastChart";
+import { PageContainer } from "../components/PageContainer";
 import { SevenDayForecast } from "../components/SevenDayForecast";
 import { hourlyForecastPlaceholder } from "../data/hourlyForecast";
 
@@ -21,21 +23,9 @@ interface PageProps {
 
 export default function CityPage({ params }: PageProps) {
   return (
-    <Suspense fallback={<CityWeatherFallback />}>
+    <Suspense fallback={<CityWeatherSkeleton />}>
       <CityWeather params={params} />
     </Suspense>
-  );
-}
-
-function CityWeatherFallback() {
-  return (
-    <div className="min-h-screen">
-      <div className="max-w-xl mx-auto py-24 px-6">
-        <p className="text-base text-muted-foreground text-shadow-sm">
-          Loading weather…
-        </p>
-      </div>
-    </div>
   );
 }
 
@@ -54,7 +44,7 @@ async function CityWeather({ params }: PageProps) {
 
   return (
     <div className={`min-h-screen bg-linear-to-b ${gradientClasses}`}>
-      <div className="max-w-xl mx-auto py-24 px-6 flex flex-col gap-16">
+      <PageContainer className="py-24 flex flex-col gap-16">
         <header className="flex flex-col gap-8">
           <CityHeading
             name={city.name}
@@ -72,7 +62,7 @@ async function CityWeather({ params }: PageProps) {
         <SevenDayForecast days={weather.daily} />
 
         <HourlyForecastChart forecast={hourlyForecastPlaceholder} />
-      </div>
+      </PageContainer>
     </div>
   );
 }

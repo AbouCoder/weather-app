@@ -5,6 +5,8 @@ import type {
   DraggableSyntheticListeners,
 } from "@dnd-kit/core";
 import { GripVerticalIcon, Trash2Icon } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 // What the sortable list hands each card so its grip starts the drag
 export interface DragHandleProps {
@@ -20,9 +22,12 @@ export interface CityCardControlsProps {
   onDelete?: () => void;
 }
 
-// 40×40 tap targets, styled like the app's other glassy controls
-const controlClassName =
-  "inline-flex size-10 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-white/10 outline-none focus-visible:ring-2 focus-visible:ring-white/40 transition-colors [&_svg]:size-5 [&_svg]:drop-shadow-md";
+// The shared 40×40 ghost icon button, so the grip and bin match the dialog's
+// close button
+const controlClassName = cn(
+  buttonVariants({ variant: "glass-ghost", size: "icon-pill" }),
+  "[&_svg]:drop-shadow-md",
+);
 
 export function CityDragHandle({
   name,

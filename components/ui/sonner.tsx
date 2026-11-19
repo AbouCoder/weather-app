@@ -1,9 +1,13 @@
 "use client";
 
 import { Toaster as Sonner, type ToasterProps } from "sonner";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-// The app is always dark, so the theme is fixed instead of read from
-// next-themes as shadcn's version does. Toasts match the glassy cards
+// Sonner's own styling is turned off so toasts are built from the app's
+// shared looks: the same frosted overlay as the dialog, and the same primary
+// pill button. The app is always dark, so the theme is fixed instead of read
+// from next-themes as shadcn's version does
 function Toaster(props: ToasterProps) {
   return (
     <Sonner
@@ -11,11 +15,14 @@ function Toaster(props: ToasterProps) {
       position="bottom-center"
       className="toaster group"
       toastOptions={{
+        unstyled: true,
         classNames: {
           toast:
-            "!rounded-2xl !bg-slate-900/90 supports-backdrop-filter:!backdrop-blur-xl !border-white/10 !text-foreground !shadow-lg !shadow-black/30 inset-shadow-xs inset-shadow-white/20 !font-sans",
-          actionButton:
-            "!h-8 !rounded-full !px-3 !bg-linear-to-b !from-white !to-slate-200 !text-slate-900 !font-medium",
+            "flex w-full items-center gap-3 rounded-2xl bg-surface-overlay py-3 pl-5 pr-3 font-sans text-sm text-foreground ring-1 ring-white/10 glass-raised supports-backdrop-filter:backdrop-blur-xl",
+          // The text grows so the Undo button sits at the right edge
+          content: "flex-1",
+          title: "text-shadow-sm",
+          actionButton: cn(buttonVariants({ variant: "primary", size: "pill" })),
         },
       }}
       {...props}
