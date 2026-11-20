@@ -16,6 +16,7 @@ export function SevenDayForecast({ days }: SevenDayForecastProps) {
         {days.map((day, index) => (
           <DailyForecastRow
             key={day.date}
+            date={day.date}
             dayLabel={getForecastDayLabel(day.date, index)}
             maxCelsius={day.maxCelsius}
             minCelsius={day.minCelsius}

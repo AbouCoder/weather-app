@@ -33,6 +33,7 @@ export function SavedCitiesList() {
   return (
     <Section
       title="Cities"
+      headingLevel="h1"
       action={<AddCityDialog savedSlugs={slugs ?? []} onAdd={add} />}
     >
       {slugs && cities.length === 0 ? (

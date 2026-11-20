@@ -1,4 +1,8 @@
-import { formatDayAndMonth, getCurrentTimeInTimezone } from "../lib/dateTime";
+import {
+  formatDayAndMonth,
+  getCurrentTimeInTimezone,
+  getCurrentTimeValueInTimezone,
+} from "../lib/dateTime";
 import { TitleGroup } from "./TitleGroup";
 
 interface CityHeadingProps {
@@ -13,10 +17,14 @@ interface CityHeadingProps {
 export function CityHeading({ name, date, timezone }: CityHeadingProps) {
   return (
     <TitleGroup
-      as="h2"
+      as="h1"
       size="lg"
       title={name}
-      subtitle={`${formatDayAndMonth(date)} ${getCurrentTimeInTimezone(timezone)}`}
+      subtitle={
+        <time dateTime={`${date}T${getCurrentTimeValueInTimezone(timezone)}`}>
+          {formatDayAndMonth(date)} {getCurrentTimeInTimezone(timezone)}
+        </time>
+      }
     />
   );
 }

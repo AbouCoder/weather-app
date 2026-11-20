@@ -11,15 +11,18 @@ export function TemperatureUnitToggle() {
 
   return (
     <div className="flex items-center gap-2 text-sm font-medium text-shadow-sm">
-      {/* The labels are click targets too; keyboard and screen reader users
-          get the same control through the switch itself */}
-      <span
+      {/* The labels are buttons for the mouse only; keyboard and screen
+          reader users get the same control through the switch itself.
+          Browsers reset text shadow on buttons, so they set it again */}
+      <button
+        type="button"
+        tabIndex={-1}
         aria-hidden
         onClick={() => setUnit("celsius")}
-        className="cursor-pointer text-foreground fahrenheit:text-muted-foreground transition-colors duration-300"
+        className="cursor-pointer text-shadow-sm text-foreground fahrenheit:text-muted-foreground transition-colors duration-300"
       >
         °C
-      </span>
+      </button>
       <Switch
         checked={unit === "fahrenheit"}
         onCheckedChange={(checked) =>
@@ -32,13 +35,15 @@ export function TemperatureUnitToggle() {
         // the unchecked state the server renders
         thumbClassName="group-data-[size=default]/switch:size-4.5 primary-fill duration-300 ease-out fahrenheit:translate-x-4!"
       />
-      <span
+      <button
+        type="button"
+        tabIndex={-1}
         aria-hidden
         onClick={() => setUnit("fahrenheit")}
-        className="cursor-pointer text-muted-foreground fahrenheit:text-foreground transition-colors duration-300"
+        className="cursor-pointer text-shadow-sm text-muted-foreground fahrenheit:text-foreground transition-colors duration-300"
       >
         °F
-      </span>
+      </button>
     </div>
   );
 }

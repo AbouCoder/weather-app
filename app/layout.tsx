@@ -45,9 +45,13 @@ export default function RootLayout({
         <TemperatureUnitProvider>
           <header className="fixed top-0 left-0 w-full z-10 bg-header backdrop-blur-sm">
             <PageContainer className="py-8 flex justify-between items-center">
-              <h1 className="text-base font-semibold text-muted-foreground hover:text-foreground text-shadow-sm">
-                <Link href="/">Weather</Link>
-              </h1>
+              {/* The app name is a plain link; each page has its own <h1> */}
+              <Link
+                href="/"
+                className="text-base font-semibold text-muted-foreground hover:text-foreground text-shadow-sm"
+              >
+                Weather
+              </Link>
               <TemperatureUnitToggle />
             </PageContainer>
           </header>

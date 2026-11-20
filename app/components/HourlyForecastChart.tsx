@@ -19,11 +19,14 @@ export function HourlyForecastChart({ forecast }: HourlyForecastChartProps) {
 
   return (
     <Section title="Next 24 Hours" divided>
-      <div
+      {/* Focusable so keyboard users can scroll it; the caption names it */}
+      <figure
         className="overflow-x-auto pt-4 pb-2 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent] icon-motion-paused"
         tabIndex={0}
-        aria-label="Hourly temperature, conditions and chance of precipitation"
       >
+        <figcaption className="sr-only">
+          Hourly temperature, conditions and chance of precipitation
+        </figcaption>
         {/* Bottom padding leaves room for the sunrise and sunset labels */}
         <div className="relative pb-8" style={{ width: chart.chartWidth }}>
           <HourlyConditionsRow
@@ -42,7 +45,7 @@ export function HourlyForecastChart({ forecast }: HourlyForecastChartProps) {
             <SunEventMarker key={marker.label} {...marker} />
           ))}
         </div>
-      </div>
+      </figure>
     </Section>
   );
 }

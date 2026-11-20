@@ -15,7 +15,7 @@ export function CurrentWeatherSummary({
   isNight,
 }: CurrentWeatherSummaryProps) {
   return (
-    <section className="flex justify-between items-center">
+    <div className="flex justify-between items-center">
       <div className="flex flex-col gap-2">
         <Temperature celsius={temperature} size="hero" />
         <p className="text-base text-muted-foreground text-shadow-sm">
@@ -23,6 +23,6 @@ export function CurrentWeatherSummary({
         </p>
       </div>
       <Icon isNight={isNight} className="size-28" />
-    </section>
+    </div>
   );
 }

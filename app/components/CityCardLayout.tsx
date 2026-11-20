@@ -1,6 +1,9 @@
 import { cn } from "@/lib/utils";
 import { Temperature } from "./Temperature";
-import { getCurrentTimeInTimezone } from "../lib/dateTime";
+import {
+  getCurrentTimeInTimezone,
+  getCurrentTimeValueInTimezone,
+} from "../lib/dateTime";
 import { WeatherIcon } from "../lib/types";
 import {
   CityCardControlsProps,
@@ -47,7 +50,14 @@ export function CityCardLayout({
       <CityCardBody
         href={`/${slug}`}
         title={name}
-        subtitle={`${getCurrentTimeInTimezone(timezone)} · ${description}`}
+        subtitle={
+          <>
+            <time dateTime={getCurrentTimeValueInTimezone(timezone)}>
+              {getCurrentTimeInTimezone(timezone)}
+            </time>
+            {` · ${description}`}
+          </>
+        }
         trailing={
           <>
             <Temperature celsius={temperature} size="large" />

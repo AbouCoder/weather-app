@@ -7,6 +7,17 @@ export function getCurrentTimeInTimezone(timezone: string): string {
     });
   }
   
+  // The same time as a 24-hour "HH:MM" string, for a <time> element's
+  // dateTime attribute
+  export function getCurrentTimeValueInTimezone(timezone: string): string {
+    return new Date().toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+      timeZone: timezone,
+    });
+  }
+
   export function formatDayAndMonth(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB", {

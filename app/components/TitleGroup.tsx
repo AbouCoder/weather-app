@@ -5,8 +5,8 @@ interface TitleGroupProps {
   title: ReactNode;
   // The muted line under the title
   subtitle?: ReactNode;
-  // h3 for cards and panels, h2 for a page title
-  as?: "h2" | "h3";
+  // h1 for a page title, h2 for cards and panels under it
+  as?: "h1" | "h2";
   size?: "md" | "lg";
   align?: "start" | "center";
   className?: string;
@@ -21,23 +21,25 @@ const SIZES = {
 };
 
 // A bold title with a smaller, muted line under it, e.g. a city's name over
-// its local time and conditions
+// its local time and conditions. <hgroup> ties the subtitle to its heading
 export function TitleGroup({
   title,
   subtitle,
-  as: Heading = "h3",
+  as: Heading = "h2",
   size = "md",
   align = "start",
   className,
 }: TitleGroupProps) {
   return (
-    <div className={cn("min-w-0", align === "center" && "text-center", className)}>
+    <hgroup
+      className={cn("min-w-0", align === "center" && "text-center", className)}
+    >
       <Heading className={SIZES[size].title}>
         {title}
       </Heading>
       {subtitle && (
         <p className={SIZES[size].subtitle}>{subtitle}</p>
       )}
-    </div>
+    </hgroup>
   );
 }
