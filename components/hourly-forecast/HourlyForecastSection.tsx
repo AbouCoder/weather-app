@@ -1,0 +1,51 @@
+import { HourlyForecast } from "@/lib/weather/types";
+import { buildHourlyChart } from "./hourlyChart";
+import { Section } from "@/components/shared/Section";
+import { HourlyConditionsRow } from "./HourlyConditionsRow";
+import { PrecipitationBars } from "./PrecipitationBars";
+import { SunEventMarker } from "./SunEventMarker";
+import { TemperatureLine } from "./TemperatureLine";
+
+interface HourlyForecastSectionProps {
+  forecast: HourlyForecast;
+}
+
+// The "Next 24 Hours" section: a sideways-scrolling chart with each hour's
+// conditions on top, the temperature line in the middle and the chance of
+// precipitation below, with sunrise and sunset marked across all three
+export function HourlyForecastSection({ forecast }: HourlyForecastSectionProps) {
+  const { hourly } = forecast;
+  const chart = buildHourlyChart(forecast);
+
+  return (
+    <Section title="Next 24 Hours" divided>
+      {/* Focusable so keyboard users can scroll it; the caption names it */}
+      <figure
+        className="overflow-x-auto pt-4 pb-2 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent] icon-motion-paused"
+        tabIndex={0}
+      >
+        <figcaption className="sr-only">
+          Hourly temperature, conditions and chance of precipitation
+        </figcaption>
+        {/* Bottom padding leaves room for the sunrise and sunset labels */}
+        <div className="relative pb-8" style={{ width: chart.chartWidth }}>
+          <HourlyConditionsRow
+            hourly={hourly}
+            isNightHour={chart.isNightHour}
+          />
+          <TemperatureLine
+            hourly={hourly}
+            chartWidth={chart.chartWidth}
+            temperaturePoints={chart.temperaturePoints}
+            linePoints={chart.linePoints}
+            areaPoints={chart.areaPoints}
+          />
+          <PrecipitationBars hourly={hourly} />
+          {chart.sunMarkers.map((marker) => (
+            <SunEventMarker key={marker.label} {...marker} />
+          ))}
+        </div>
+      </figure>
+    </Section>
+  );
+}

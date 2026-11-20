@@ -3,11 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/sonner";
-import { WeatherIconDefs } from "./components/icons/WeatherIconDefs";
-import { PageContainer } from "./components/PageContainer";
-import { TemperatureUnitToggle } from "./components/TemperatureUnitToggle";
-import { TemperatureUnitProvider } from "./context/TemperatureUnitContext";
-import { applySavedTemperatureUnitScript } from "./lib/temperature";
+import { WeatherIconDefs } from "@/components/icons/WeatherIconDefs";
+import { PageContainer } from "@/components/shared/PageContainer";
+import { TemperatureUnitToggle } from "@/components/temperature/TemperatureUnitToggle";
+import { TemperatureUnitProvider } from "@/context/TemperatureUnitContext";
+import { applySavedTemperatureUnitScript } from "@/lib/temperature";
 
 export const inter = Inter({
   subsets: ["latin"],

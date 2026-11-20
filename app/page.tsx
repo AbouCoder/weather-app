@@ -1,10 +1,10 @@
-import { PageContainer } from "./components/PageContainer";
-import { SavedCitiesList } from "./components/SavedCitiesList";
+import { PageContainer } from "@/components/shared/PageContainer";
+import { SavedCitiesSection } from "@/components/city-cards/SavedCitiesSection";
 
 export default function Home() {
   return (
     <PageContainer className="py-24">
-      <SavedCitiesList />
+      <SavedCitiesSection />
     </PageContainer>
   );
 }
