@@ -14,6 +14,8 @@ export function PrecipitationBars({ hourly }: PrecipitationBarsProps) {
         <li
           key={hour.time}
           className="flex flex-col items-center justify-end gap-1 shrink-0"
+          // A fixed height, with room under the tallest bar for the
+          // percentage, keeps every bar's base on the same line
           style={{ width: COLUMN_WIDTH, height: MAX_BAR_HEIGHT + 24 }}
         >
           <div

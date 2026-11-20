@@ -23,6 +23,8 @@ export function CityWeatherLoader({
   const [weather, setWeather] = useState<WeatherState>("loading");
 
   useEffect(() => {
+    // Set when the card unmounts or switches city, so a late response from
+    // the previous request can't overwrite the current one
     let ignore = false;
 
     fetch(`/api/weather?slug=${encodeURIComponent(city.slug)}`)

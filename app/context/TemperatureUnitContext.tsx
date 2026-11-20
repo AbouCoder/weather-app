@@ -36,7 +36,9 @@ function readSavedUnit(): TemperatureUnit | null {
   }
 }
 
-// The unit lives on <html> so CSS can show it before React hydrates
+// The unit lives on <html> so CSS can show it before React hydrates. Nothing
+// tells React when an attribute changes, so this fires an event that
+// useSyncExternalStore listens for to re-read it
 function applyUnit(unit: TemperatureUnit) {
   document.documentElement.setAttribute(TEMPERATURE_UNIT_ATTRIBUTE, unit);
   window.dispatchEvent(new Event(UNIT_CHANGE_EVENT));
@@ -78,6 +80,9 @@ function getUnitSnapshot(): TemperatureUnit {
   return isTemperatureUnit(unit) ? unit : "celsius";
 }
 
+// The server can't know the saved unit. Celsius matches the attribute the
+// layout renders, and the visible unit comes from CSS anyway, so the page
+// still opens in the saved unit
 function getServerUnitSnapshot(): TemperatureUnit {
   return "celsius";
 }

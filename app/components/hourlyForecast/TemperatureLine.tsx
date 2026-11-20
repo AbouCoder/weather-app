@@ -46,6 +46,7 @@ export function TemperatureLine({
           celsius={hour.temperature}
           size="small"
           className="absolute -translate-x-1/2"
+          // 24px up clears the dot; the chart's top padding makes room for it
           style={{
             left: temperaturePoints[index].x,
             top: temperaturePoints[index].y - 24,

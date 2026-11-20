@@ -18,6 +18,9 @@ function readSavedSlugs(): string[] {
     const saved: unknown = JSON.parse(raw);
     if (!Array.isArray(saved)) return defaultCitySlugs;
 
+    // Drops anything that no longer matches a known city, e.g. one taken out of
+    // data/cities after it was saved, and any repeats, so the list never
+    // shows a broken card or two cards with the same drag id
     return saved.filter(
       (slug, index): slug is string =>
         typeof slug === "string" &&
@@ -63,6 +66,9 @@ function restoreSlug(
   return [...current.slice(0, index), slug, ...current.slice(index)];
 }
 
+// Takes the city out, then inserts it at the target's old index. That lands
+// it after the target when moving down and before it when moving up, which
+// is where dnd-kit shows it while dragging
 function moveSlug(current: string[], slug: string, toSlug: string) {
   const from = current.indexOf(slug);
   const to = current.indexOf(toSlug);
@@ -100,7 +106,10 @@ export function useSavedCities() {
     );
   }
 
-  // Returns what undo needs, or null if the city isn't listed
+  // Returns what undo needs, or null if the city isn't listed. Unlike the
+  // others it reads the list from this render, because the caller needs the
+  // result straight away to build the undo toast, and an updater function
+  // runs too late for that
   function remove(slug: string): RemovedCity | null {
     if (!slugs?.includes(slug)) return null;
     const removed = { slug, slugsBeforeRemoval: slugs };

@@ -6,6 +6,9 @@ export async function fetchWeatherForecast(
   lat: number,
   lon: number
 ): Promise<WeatherForecast> {
+  // timezone=auto makes Open-Meteo return every time in the city's own local
+  // time with no UTC offset, e.g. "2026-11-20T07:12". The date helpers rely
+  // on that, so their maths happens in the city's wall-clock time
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code,sunrise,sunset&timezone=auto&forecast_days=7`;
 
   const response = await fetch(url);
@@ -21,6 +24,7 @@ export async function fetchWeatherForecast(
       temperature: data.current.temperature_2m,
       weatherCode: data.current.weather_code,
       timezone: data.timezone,
+      // Day 0 of the daily forecast is today in the city
       sunrise: data.daily.sunrise[0],
       sunset: data.daily.sunset[0],
     },

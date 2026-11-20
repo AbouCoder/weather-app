@@ -40,12 +40,17 @@ export function buildHourlyChart({
   sunset,
 }: HourlyForecast): HourlyChart {
   const chartWidth = hourly.length * COLUMN_WIDTH;
+  // The times have no offset, so they parse in this machine's timezone. That
+  // shifts every time equally, so the gaps between them are still right
   const firstHourMs = new Date(hourly[0].time).getTime();
 
   const temperatures = hourly.map((hour) => hour.temperature);
   const minCelsius = Math.min(...temperatures);
+  // A flat day would make the range 0; using 1 puts the line at the bottom
+  // instead of dividing by zero
   const temperatureRange = Math.max(...temperatures) - minCelsius || 1;
 
+  // Each point sits in the middle of its hour's column, under the hour label
   const temperaturePoints = hourly.map((hour, index) => ({
     x: (index + 0.5) * COLUMN_WIDTH,
     y:
@@ -73,6 +78,10 @@ export function buildHourlyChart({
     .map((marker) => ({ ...marker, x: getXForTime(marker.time) }))
     .filter(({ x }) => x >= 0 && x <= chartWidth);
 
+  // The times share one "YYYY-MM-DDTHH:MM" format, so comparing them as
+  // strings compares them in time order. The chart spans 24 hours, so it
+  // holds either a sunset then the next sunrise (night is between them) or a
+  // sunrise then a sunset (night is outside them)
   const isNightHour = (time: string) =>
     sunset < sunrise
       ? time >= sunset && time < sunrise

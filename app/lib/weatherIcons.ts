@@ -14,6 +14,7 @@ export function getWeatherIcon(weatherCode: number): WeatherIcon {
   if (weatherCode === 0) return ClearSky;
   if (weatherCode === 1) return MainlyClear;
   if (weatherCode === 2) return PartlyCloudy;
+  // There's no fog icon; fog (45, 48) reads closest to overcast
   if (weatherCode === 3 || weatherCode === 45 || weatherCode === 48) {
     return Overcast;
   }
@@ -32,5 +33,6 @@ export function getWeatherIcon(weatherCode: number): WeatherIcon {
   }
   if (weatherCode >= 95 && weatherCode <= 99) return Thunderstorm;
 
+  // A code Open-Meteo adds later gets a neutral icon rather than none
   return PartlyCloudy;
 }

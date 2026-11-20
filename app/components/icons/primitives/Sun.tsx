@@ -13,6 +13,8 @@ interface SunProps {
           r={150 * scale}
           fill="url(#yellowGlow)"
           className="animate-pulse"
+          // Scales around the glow's own centre; by default an SVG shape
+          // transforms around the icon's centre, which the sun is moved off
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
         />
         <circle

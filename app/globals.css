@@ -2,7 +2,9 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* Matches while the user has picked Fahrenheit with the TemperatureUnitToggle */
+/* Matches while the user has picked Fahrenheit with the TemperatureUnitToggle.
+   :where() adds no specificity, so a fahrenheit: class weighs the same as
+   the plain class it overrides and wins only by coming later in the CSS */
 @custom-variant fahrenheit (&:where([data-temperature-unit="fahrenheit"] *));
 
 /* shadcn's dark: styles only apply under a .dark class, which the app doesn't
@@ -254,7 +256,9 @@
 }
 
 /* The weather icons animate by default. These stop them inside lists and
-   cards, and start them again, e.g. while a card is hovered */
+   cards, and start them again, e.g. while a card is hovered. A bare 0 isn't a
+   valid time, so every animation built from it is dropped and the icons sit
+   in their resting pose; one variable stops them all, whatever the shape */
 @utility icon-motion-paused {
   --animation-duration: 0;
 }

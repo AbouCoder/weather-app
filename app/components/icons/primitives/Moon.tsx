@@ -17,6 +17,7 @@ interface MoonProps {
             r={140}
             fill="url(#yellowGlow)"
             className="animate-pulse"
+            // Pulses around its own centre, as the sun's glow does
             style={{ transformBox: "fill-box", transformOrigin: "center" }}
           />
         </g>

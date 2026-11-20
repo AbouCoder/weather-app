@@ -100,6 +100,10 @@ export function WeatherIconDefs() {
           <stop offset="100%" stopColor="var(--color-sky-200)" />
         </linearGradient>
 
+        {/* A filter's area defaults to its shape's box, which is too small
+            for thin strokes and for drops and bolts that move as they
+            animate, so the effect got clipped. This one covers the whole icon
+            with room to spare */}
         <filter
           id="whiteInnerShadowSmall"
           filterUnits="userSpaceOnUse"
