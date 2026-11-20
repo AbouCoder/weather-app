@@ -8,7 +8,8 @@ import {
   DeleteCityButton,
   CityDragHandle,
 } from "./CityCardControls";
-import { CityCardShell } from "./CityCardShell";
+import { GlassPanel } from "./GlassPanel";
+import { TitleGroup } from "./TitleGroup";
 
 interface CityCardLayoutProps extends CityCardControlsProps {
   slug: string;
@@ -36,7 +37,7 @@ export function CityCardLayout({
   // The grip and bin sit beside the link, not inside it, so they never
   // open the detail page
   return (
-    <CityCardShell
+    <GlassPanel
       className={cn(
         "group bg-linear-to-b transition-opacity duration-150",
         gradientClasses,
@@ -47,16 +48,12 @@ export function CityCardLayout({
         href={`/${slug}`}
         className="flex-1 min-w-0 flex justify-between items-center gap-4 py-6 px-2 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
       >
-        <div className="min-w-0">
-          <h3 className="text-base font-semibold text-shadow-md">{name}</h3>
-          <p className="text-sm text-muted-foreground text-shadow-sm">
-            {getCurrentTimeInTimezone(timezone)} · {description}
-          </p>
-        </div>
+        <TitleGroup
+          title={name}
+          subtitle={`${getCurrentTimeInTimezone(timezone)} · ${description}`}
+        />
         <div className="flex gap-6 items-center">
-          <span className="text-4xl font-light text-shadow-md">
-            <Temperature celsius={temperature} />
-          </span>
+          <Temperature celsius={temperature} size="large" />
           <Icon
             className="size-12 [--animation-duration:0] group-hover:[--animation-duration:4s]"
             isNight={isNight}
@@ -64,6 +61,6 @@ export function CityCardLayout({
         </div>
       </Link>
       <DeleteCityButton name={name} onDelete={onDelete} />
-    </CityCardShell>
+    </GlassPanel>
   );
 }

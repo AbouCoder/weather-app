@@ -5,6 +5,7 @@ import { City, getCityBySlug } from "@/data/cities";
 import { useSavedCities } from "../hooks/useSavedCities";
 import { AddCityDialog } from "./AddCityDialog";
 import { EmptyCitiesState } from "./EmptyCitiesState";
+import { Section } from "./Section";
 import { SortableCityList } from "./SortableCityList";
 
 const UNDO_DURATION_MS = 5000;
@@ -30,12 +31,10 @@ export function SavedCitiesList() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-base font-semibold text-shadow-md">Cities</h2>
-        <AddCityDialog savedSlugs={slugs ?? []} onAdd={add} />
-      </div>
-
+    <Section
+      title="Cities"
+      action={<AddCityDialog savedSlugs={slugs ?? []} onAdd={add} />}
+    >
       {slugs && cities.length === 0 ? (
         <EmptyCitiesState onAdd={add} />
       ) : (
@@ -45,6 +44,6 @@ export function SavedCitiesList() {
           onDelete={handleDelete}
         />
       )}
-    </div>
+    </Section>
   );
 }

@@ -17,9 +17,7 @@ export function CurrentWeatherSummary({
   return (
     <section className="flex justify-between items-center">
       <div className="flex flex-col gap-2">
-        <span className="text-6xl font-light text-shadow-lg">
-          <Temperature celsius={temperature} />
-        </span>
+        <Temperature celsius={temperature} size="hero" />
         <p className="text-base text-muted-foreground text-shadow-sm">
           {description}
         </p>

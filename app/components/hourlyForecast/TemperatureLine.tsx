@@ -41,16 +41,16 @@ export function TemperatureLine({
         ))}
       </svg>
       {hourly.map((hour, index) => (
-        <span
+        <Temperature
           key={hour.time}
-          className="absolute -translate-x-1/2 text-sm font-medium text-shadow-sm"
+          celsius={hour.temperature}
+          size="small"
+          className="absolute -translate-x-1/2"
           style={{
             left: temperaturePoints[index].x,
             top: temperaturePoints[index].y - 24,
           }}
-        >
-          <Temperature celsius={hour.temperature} />
-        </span>
+        />
       ))}
     </div>
   );

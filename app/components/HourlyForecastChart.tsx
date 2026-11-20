@@ -1,5 +1,6 @@
 import { HourlyForecast } from "../lib/types";
 import { buildHourlyChart } from "../lib/hourlyChart";
+import { Section } from "./Section";
 import { HourlyConditionsRow } from "./hourlyForecast/HourlyConditionsRow";
 import { PrecipitationBars } from "./hourlyForecast/PrecipitationBars";
 import { SunEventMarker } from "./hourlyForecast/SunEventMarker";
@@ -17,12 +18,9 @@ export function HourlyForecastChart({ forecast }: HourlyForecastChartProps) {
   const chart = buildHourlyChart(forecast);
 
   return (
-    <section>
-      <h2 className="text-base font-semibold mb-4 text-shadow-md">
-        Next 24 Hours
-      </h2>
+    <Section title="Next 24 Hours" divided>
       <div
-        className="overflow-x-auto border-t border-border pt-4 pb-2 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent] [--animation-duration:0]"
+        className="overflow-x-auto pt-4 pb-2 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent] [--animation-duration:0]"
         tabIndex={0}
         aria-label="Hourly temperature, conditions and chance of precipitation"
       >
@@ -45,6 +43,6 @@ export function HourlyForecastChart({ forecast }: HourlyForecastChartProps) {
           ))}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

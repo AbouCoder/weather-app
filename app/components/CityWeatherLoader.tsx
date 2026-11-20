@@ -46,21 +46,13 @@ export function CityWeatherLoader({
 
   if (weather === "loading") {
     return (
-      <CityCardPlaceholder
-        name={city.name}
-        message="Loading weather…"
-        {...controls}
-      />
+      <CityCardPlaceholder name={city.name} state="loading" {...controls} />
     );
   }
 
   if (weather === "error") {
     return (
-      <CityCardPlaceholder
-        name={city.name}
-        message="Weather unavailable"
-        {...controls}
-      />
+      <CityCardPlaceholder name={city.name} state="error" {...controls} />
     );
   }
 
