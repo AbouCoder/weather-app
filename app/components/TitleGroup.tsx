@@ -13,8 +13,11 @@ interface TitleGroupProps {
 }
 
 const SIZES = {
-  md: { title: "text-base", subtitle: "text-sm" },
-  lg: { title: "text-xl", subtitle: "text-base" },
+  md: { title: "text-heading", subtitle: "text-caption" },
+  lg: {
+    title: "text-xl font-semibold text-shadow-md",
+    subtitle: "text-base text-muted-foreground text-shadow-sm",
+  },
 };
 
 // A bold title with a smaller, muted line under it, e.g. a city's name over
@@ -29,18 +32,11 @@ export function TitleGroup({
 }: TitleGroupProps) {
   return (
     <div className={cn("min-w-0", align === "center" && "text-center", className)}>
-      <Heading className={cn(SIZES[size].title, "font-semibold text-shadow-md")}>
+      <Heading className={SIZES[size].title}>
         {title}
       </Heading>
       {subtitle && (
-        <p
-          className={cn(
-            SIZES[size].subtitle,
-            "text-muted-foreground text-shadow-sm",
-          )}
-        >
-          {subtitle}
-        </p>
+        <p className={SIZES[size].subtitle}>{subtitle}</p>
       )}
     </div>
   );

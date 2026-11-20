@@ -9,7 +9,7 @@ export function SunEventMarker({ label, time, x }: SunMarker) {
       style={{ left: x }}
     >
       <div className="flex-1 border-l border-dashed border-white/40" />
-      <span className="-translate-x-1/2 mt-1 whitespace-nowrap rounded-full bg-white/10 px-2 py-0.5 text-xs text-shadow-sm glass-edge">
+      <span className="-translate-x-1/2 mt-1 whitespace-nowrap rounded-full bg-glass px-2 py-0.5 text-xs text-shadow-sm glass-edge">
         {label} {formatHourMinute(time)}
       </span>
     </div>

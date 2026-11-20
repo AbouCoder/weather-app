@@ -26,7 +26,7 @@ export function TemperatureUnitToggle() {
           setUnit(checked ? "fahrenheit" : "celsius")
         }
         aria-label="Show temperatures in Fahrenheit"
-        className="data-[size=default]:h-6 data-[size=default]:w-10 p-0.5 data-checked:bg-white/10 data-unchecked:bg-white/10 glass-raised cursor-pointer"
+        className="data-[size=default]:h-6 data-[size=default]:w-10 p-0.5 data-checked:bg-glass data-unchecked:bg-glass glass-raised cursor-pointer"
         // Sized so the default checked offset (thumb width - 2px) is exactly
         // the track's travel; the important flag lets the saved unit win over
         // the unchecked state the server renders

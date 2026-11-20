@@ -18,7 +18,7 @@ function Toaster(props: ToasterProps) {
         unstyled: true,
         classNames: {
           toast:
-            "flex w-full items-center gap-3 rounded-2xl bg-surface-overlay py-3 pl-5 pr-3 font-sans text-sm text-foreground ring-1 ring-white/10 glass-raised supports-backdrop-filter:backdrop-blur-xl",
+            "flex w-full items-center gap-3 glass-overlay py-3 pl-5 pr-3 font-sans text-sm text-foreground",
           // The text grows so the Undo button sits at the right edge
           content: "flex-1",
           title: "text-shadow-sm",

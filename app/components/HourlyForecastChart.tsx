@@ -20,7 +20,7 @@ export function HourlyForecastChart({ forecast }: HourlyForecastChartProps) {
   return (
     <Section title="Next 24 Hours" divided>
       <div
-        className="overflow-x-auto pt-4 pb-2 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent] [--animation-duration:0]"
+        className="overflow-x-auto pt-4 pb-2 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent] icon-motion-paused"
         tabIndex={0}
         aria-label="Hourly temperature, conditions and chance of precipitation"
       >

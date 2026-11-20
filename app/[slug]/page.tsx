@@ -7,7 +7,7 @@ import { CityHeading } from "../components/CityHeading";
 import { CityWeatherSkeleton } from "../components/CityWeatherSkeleton";
 import { CurrentWeatherSummary } from "../components/CurrentWeatherSummary";
 import { HourlyForecastChart } from "../components/HourlyForecastChart";
-import { PageContainer } from "../components/PageContainer";
+import { CityPageLayout } from "../components/CityPageLayout";
 import { SevenDayForecast } from "../components/SevenDayForecast";
 import { hourlyForecastPlaceholder } from "../data/hourlyForecast";
 
@@ -43,8 +43,7 @@ async function CityWeather({ params }: PageProps) {
   );
 
   return (
-    <div className={`min-h-screen bg-linear-to-b ${gradientClasses}`}>
-      <PageContainer className="py-24 flex flex-col gap-16">
+    <CityPageLayout gradientClasses={gradientClasses}>
         <header className="flex flex-col gap-8">
           <CityHeading
             name={city.name}
@@ -62,7 +61,6 @@ async function CityWeather({ params }: PageProps) {
         <SevenDayForecast days={weather.daily} />
 
         <HourlyForecastChart forecast={hourlyForecastPlaceholder} />
-      </PageContainer>
-    </div>
+    </CityPageLayout>
   );
 }

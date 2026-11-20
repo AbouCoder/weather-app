@@ -21,7 +21,7 @@ export function Section({
   return (
     <section className={className}>
       <div className="mb-4 flex items-center justify-between gap-4">
-        <h2 className="text-base font-semibold text-shadow-md">{title}</h2>
+        <h2 className="text-heading">{title}</h2>
         {action}
       </div>
       {divided ? (

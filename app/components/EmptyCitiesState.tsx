@@ -9,7 +9,7 @@ interface EmptyCitiesStateProps {
 // Shown in place of the list once every city has been removed
 export function EmptyCitiesState({ onAdd }: EmptyCitiesStateProps) {
   return (
-    <GlassPanel layout="stack" className="bg-white/5">
+    <GlassPanel layout="stack">
       <TitleGroup
         title="No cities yet"
         subtitle="Add a city to see its weather here."

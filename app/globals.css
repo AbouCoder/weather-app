@@ -20,6 +20,10 @@
   --header: rgb(0 0 0 / 10%);
   /* Dialogs and toasts float over the page in this frosted dark glass */
   --surface-overlay: rgb(15 23 42 / 90%);
+  /* The two white fills glass surfaces use: subtle for panels and the
+     dialog's search box, stronger for pills, tracks and skeleton shapes */
+  --glass-fill-subtle: rgb(255 255 255 / 5%);
+  --glass-fill: rgb(255 255 255 / 10%);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: var(--surface-overlay);
@@ -59,6 +63,8 @@
   --color-border: var(--border);
   --color-header: var(--header);
   --color-surface-overlay: var(--surface-overlay);
+  --color-glass-subtle: var(--glass-fill-subtle);
+  --color-glass: var(--glass-fill);
 
   /* Fonts */
   --font-sans: var(--font-inter);
@@ -226,4 +232,33 @@
 /* The solid white fill of primary buttons and the unit switch's thumb */
 @utility primary-fill {
   @apply bg-linear-to-b from-white to-slate-200 text-slate-900 shadow-md shadow-black/30;
+}
+
+/* The frosted panel that floats over the page: the dialog and the toast */
+@utility glass-overlay {
+  @apply rounded-2xl bg-surface-overlay ring-1 ring-white/10 shadow-lg shadow-black/30 inset-shadow-xs inset-shadow-white/20 supports-backdrop-filter:backdrop-blur-xl;
+}
+
+/* The one keyboard focus style for every control */
+@utility focus-ring {
+  @apply outline-none focus-visible:ring-2 focus-visible:ring-ring/50;
+}
+
+/* Text styles: section and card headings, and the small grey line under them */
+@utility text-heading {
+  @apply text-base font-semibold text-shadow-md;
+}
+
+@utility text-caption {
+  @apply text-sm text-muted-foreground text-shadow-sm;
+}
+
+/* The weather icons animate by default. These stop them inside lists and
+   cards, and start them again, e.g. while a card is hovered */
+@utility icon-motion-paused {
+  --animation-duration: 0;
+}
+
+@utility icon-motion-running {
+  --animation-duration: 4s;
 }

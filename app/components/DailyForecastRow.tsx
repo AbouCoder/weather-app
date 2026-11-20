@@ -16,7 +16,7 @@ export function DailyForecastRow({
   Icon,
 }: DailyForecastRowProps) {
   return (
-    <ListRow className="[--animation-duration:0]">
+    <ListRow className="icon-motion-paused">
       <h3 className="text-base font-medium text-shadow-sm">{dayLabel}</h3>
       <Icon className="size-8 ml-auto" />
       <div className="flex gap-4 w-16 justify-end">

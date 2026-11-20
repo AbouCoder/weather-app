@@ -5,7 +5,9 @@ interface GlassPanelProps {
   // "row": a card with things side by side, as tall as a weather card.
   // "stack": a centred column, e.g. an empty state
   layout?: "row" | "stack";
-  // The background, e.g. a weather gradient or "bg-white/5"
+  // "subtle": the faint glass fill. "none": no fill, for a panel that brings
+  // its own background, like a weather card's gradient
+  tone?: "subtle" | "none";
   className?: string;
   as?: "div" | "section" | "li";
   children: ReactNode;
@@ -21,12 +23,20 @@ const LAYOUTS = {
 // A raised glass surface with the app's corner radius and shadow
 export function GlassPanel({
   layout = "row",
+  tone = "subtle",
   className,
   as: Element = "div",
   children,
 }: GlassPanelProps) {
   return (
-    <Element className={cn("rounded-2xl glass-raised", LAYOUTS[layout], className)}>
+    <Element
+      className={cn(
+        "rounded-2xl glass-raised",
+        LAYOUTS[layout],
+        tone === "subtle" && "bg-glass-subtle",
+        className,
+      )}
+    >
       {children}
     </Element>
   );

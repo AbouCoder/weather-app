@@ -26,7 +26,7 @@ export function HourlyConditionsRow({
             className="flex flex-col items-center gap-2 shrink-0"
             style={{ width: COLUMN_WIDTH }}
           >
-            <span className="text-sm text-muted-foreground text-shadow-sm">
+            <span className="text-caption">
               {index === 0 ? "Now" : formatHourLabel(hour.time)}
             </span>
             <Icon isNight={isNightHour(hour.time)} className="size-8" />

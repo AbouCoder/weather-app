@@ -1,5 +1,5 @@
 import { ListRow } from "./ListRow";
-import { PageContainer } from "./PageContainer";
+import { CityPageLayout } from "./CityPageLayout";
 import { Skeleton } from "./Skeleton";
 
 // Shown while a city's weather loads. It has the same shape as the real page
@@ -7,8 +7,7 @@ import { Skeleton } from "./Skeleton";
 // doesn't jump around when the weather arrives
 export function CityWeatherSkeleton() {
   return (
-    <div className="min-h-screen bg-linear-to-b from-slate-700 to-slate-600">
-      <PageContainer className="py-24 flex flex-col gap-16" aria-busy>
+    <CityPageLayout gradientClasses="from-slate-700 to-slate-600" busy>
         <p className="sr-only">Loading weather…</p>
 
         <div className="flex flex-col gap-8">
@@ -36,7 +35,6 @@ export function CityWeatherSkeleton() {
             ))}
           </ul>
         </div>
-      </PageContainer>
-    </div>
+    </CityPageLayout>
   );
 }

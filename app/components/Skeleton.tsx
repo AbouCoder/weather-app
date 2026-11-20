@@ -14,7 +14,7 @@ export function Skeleton({ className, shape = "line" }: SkeletonProps) {
     <span
       aria-hidden
       className={cn(
-        "block bg-white/10",
+        "block bg-glass",
         shape === "circle" ? "rounded-full" : "rounded-lg",
         className,
       )}

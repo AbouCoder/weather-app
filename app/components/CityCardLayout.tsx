@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Temperature } from "./Temperature";
 import { getCurrentTimeInTimezone } from "../lib/dateTime";
@@ -8,8 +7,8 @@ import {
   DeleteCityButton,
   CityDragHandle,
 } from "./CityCardControls";
+import { CityCardBody } from "./CityCardBody";
 import { GlassPanel } from "./GlassPanel";
-import { TitleGroup } from "./TitleGroup";
 
 interface CityCardLayoutProps extends CityCardControlsProps {
   slug: string;
@@ -38,28 +37,27 @@ export function CityCardLayout({
   // open the detail page
   return (
     <GlassPanel
+      tone="none"
       className={cn(
         "group bg-linear-to-b transition-opacity duration-150",
         gradientClasses,
       )}
     >
       <CityDragHandle name={name} dragHandle={dragHandle} />
-      <Link
+      <CityCardBody
         href={`/${slug}`}
-        className="flex-1 min-w-0 flex justify-between items-center gap-4 py-6 px-2 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-      >
-        <TitleGroup
-          title={name}
-          subtitle={`${getCurrentTimeInTimezone(timezone)} · ${description}`}
-        />
-        <div className="flex gap-6 items-center">
-          <Temperature celsius={temperature} size="large" />
-          <Icon
-            className="size-12 [--animation-duration:0] group-hover:[--animation-duration:4s]"
-            isNight={isNight}
-          />
-        </div>
-      </Link>
+        title={name}
+        subtitle={`${getCurrentTimeInTimezone(timezone)} · ${description}`}
+        trailing={
+          <>
+            <Temperature celsius={temperature} size="large" />
+            <Icon
+              className="size-12 icon-motion-paused group-hover:icon-motion-running"
+              isNight={isNight}
+            />
+          </>
+        }
+      />
       <DeleteCityButton name={name} onDelete={onDelete} />
     </GlassPanel>
   );

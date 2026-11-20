@@ -58,10 +58,10 @@ export function AddCityDialog({ savedSlugs, onAdd }: AddCityDialogProps) {
         <PlusIcon />
         Add city
       </DialogTrigger>
-      <DialogContent className="rounded-2xl supports-backdrop-filter:backdrop-blur-xl ring-white/10 glass-raised">
+      <DialogContent>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <DialogHeader>
-            <DialogTitle className="text-base font-semibold text-shadow-md">
+            <DialogTitle>
               Add a city
             </DialogTitle>
             <DialogDescription className="text-shadow-sm">
@@ -69,7 +69,7 @@ export function AddCityDialog({ savedSlugs, onAdd }: AddCityDialogProps) {
             </DialogDescription>
           </DialogHeader>
 
-          <Command className="bg-white/5 ring-1 ring-white/10 glass-edge">
+          <Command className="bg-glass-subtle ring-1 ring-white/10 glass-edge">
             <CommandInput placeholder="Search cities…" />
             <CommandList>
               <CommandEmpty className="text-muted-foreground">
@@ -84,7 +84,7 @@ export function AddCityDialog({ savedSlugs, onAdd }: AddCityDialogProps) {
                     keywords={[city.slug.replaceAll("-", " ")]}
                     data-checked={city.slug === selectedSlug}
                     onSelect={() => setSelectedSlug(city.slug)}
-                    className="data-selected:bg-white/10"
+                    className="data-selected:bg-glass"
                   >
                     {city.name}
                   </CommandItem>
