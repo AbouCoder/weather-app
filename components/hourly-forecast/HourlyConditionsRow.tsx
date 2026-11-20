@@ -16,27 +16,33 @@ export function HourlyConditionsRow({
   hourly,
   isNightHour,
 }: HourlyConditionsRowProps) {
+  const columns = hourly.map((hour, index) => ({
+    time: hour.time,
+    label: index === 0 ? "Now" : formatHourLabel(hour.time),
+    Icon: getWeatherIcon(hour.weatherCode),
+    isNight: isNightHour(hour.time),
+    temperature: hour.temperature,
+    precipitationProbability: hour.precipitationProbability,
+  }));
+
   return (
     <ol className="flex">
-      {hourly.map((hour, index) => {
-        const Icon = getWeatherIcon(hour.weatherCode);
-        return (
-          <li
-            key={hour.time}
-            className="flex flex-col items-center gap-2 shrink-0"
-            style={{ width: COLUMN_WIDTH }}
-          >
-            <time dateTime={hour.time} className="text-caption">
-              {index === 0 ? "Now" : formatHourLabel(hour.time)}
-            </time>
-            <Icon isNight={isNightHour(hour.time)} className="size-8" />
-            <span className="sr-only">
-              <Temperature celsius={hour.temperature} />,{" "}
-              {hour.precipitationProbability}% chance of precipitation
-            </span>
-          </li>
-        );
-      })}
+      {columns.map(({ time, label, Icon, isNight, ...column }) => (
+        <li
+          key={time}
+          className="flex flex-col items-center gap-2 shrink-0"
+          style={{ width: COLUMN_WIDTH }}
+        >
+          <time dateTime={time} className="text-caption">
+            {label}
+          </time>
+          <Icon isNight={isNight} className="size-8" />
+          <span className="sr-only">
+            <Temperature celsius={column.temperature} />,{" "}
+            {column.precipitationProbability}% chance of precipitation
+          </span>
+        </li>
+      ))}
     </ol>
   );
 }

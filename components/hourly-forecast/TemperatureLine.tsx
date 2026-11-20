@@ -10,6 +10,8 @@ interface TemperatureLineProps {
   areaPoints: string;
 }
 
+const LABEL_OFFSET = 24;
+
 // The temperature line with its fill and dots, and each hour's temperature
 // written above its dot
 export function TemperatureLine({
@@ -19,6 +21,14 @@ export function TemperatureLine({
   linePoints,
   areaPoints,
 }: TemperatureLineProps) {
+  // Each hour's dot, with its temperature label 24px above it; the chart's
+  // top padding makes room for the label
+  const points = hourly.map((hour, index) => ({
+    time: hour.time,
+    celsius: hour.temperature,
+    ...temperaturePoints[index],
+  }));
+
   return (
     <div className="relative" style={{ height: CHART_HEIGHT }} aria-hidden>
       <svg
@@ -36,21 +46,17 @@ export function TemperatureLine({
           strokeLinejoin="round"
           strokeLinecap="round"
         />
-        {temperaturePoints.map(({ x, y }, index) => (
-          <circle key={hourly[index].time} cx={x} cy={y} r={3} fill="white" />
+        {points.map(({ time, x, y }) => (
+          <circle key={time} cx={x} cy={y} r={3} fill="white" />
         ))}
       </svg>
-      {hourly.map((hour, index) => (
+      {points.map(({ time, celsius, x, y }) => (
         <Temperature
-          key={hour.time}
-          celsius={hour.temperature}
+          key={time}
+          celsius={celsius}
           size="small"
           className="absolute -translate-x-1/2"
-          // 24px up clears the dot; the chart's top padding makes room for it
-          style={{
-            left: temperaturePoints[index].x,
-            top: temperaturePoints[index].y - 24,
-          }}
+          style={{ left: x, top: y - LABEL_OFFSET }}
         />
       ))}
     </div>

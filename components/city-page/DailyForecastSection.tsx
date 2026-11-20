@@ -10,18 +10,19 @@ interface DailyForecastSectionProps {
 
 // The "7-Day Forecast" section: one row per day, starting with "Today"
 export function DailyForecastSection({ days }: DailyForecastSectionProps) {
+  const rows = days.map((day, index) => ({
+    date: day.date,
+    dayLabel: getForecastDayLabel(day.date, index),
+    maxCelsius: day.maxCelsius,
+    minCelsius: day.minCelsius,
+    Icon: getWeatherIcon(day.weatherCode),
+  }));
+
   return (
     <Section title="7-Day Forecast">
       <ul className="flex flex-col">
-        {days.map((day, index) => (
-          <DailyForecastRow
-            key={day.date}
-            date={day.date}
-            dayLabel={getForecastDayLabel(day.date, index)}
-            maxCelsius={day.maxCelsius}
-            minCelsius={day.minCelsius}
-            Icon={getWeatherIcon(day.weatherCode)}
-          />
+        {rows.map((row) => (
+          <DailyForecastRow key={row.date} {...row} />
         ))}
       </ul>
     </Section>

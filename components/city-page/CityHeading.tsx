@@ -15,15 +15,16 @@ interface CityHeadingProps {
 // The city page title with today's date and the city's local time,
 // e.g. "London" over "19 November 11:21 AM"
 export function CityHeading({ name, date, timezone }: CityHeadingProps) {
+  const dateTime = `${date}T${getCurrentTimeValueInTimezone(timezone)}`;
+  const label = `${formatDayAndMonth(date)} ${getCurrentTimeInTimezone(timezone)}`;
+
   return (
     <TitleGroup
       as="h1"
       size="lg"
       title={name}
       subtitle={
-        <time dateTime={`${date}T${getCurrentTimeValueInTimezone(timezone)}`}>
-          {formatDayAndMonth(date)} {getCurrentTimeInTimezone(timezone)}
-        </time>
+        <time dateTime={dateTime}>{label}</time>
       }
     />
   );

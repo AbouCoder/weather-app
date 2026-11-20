@@ -23,20 +23,18 @@ export function SortableCityItem({ city, onDelete }: SortableCityItemProps) {
     isDragging,
   } = useSortable({ id: city.slug });
 
+  const style = { transform: CSS.Translate.toString(transform), transition };
+  // The dragged card lifts above the others
+  const className = isDragging
+    ? "relative z-10 scale-[1.02] opacity-90 drop-shadow-2xl"
+    : "";
+  const dragHandle = { attributes, listeners, setActivatorNodeRef };
+
   return (
-    <li
-      ref={setNodeRef}
-      style={{
-        transform: CSS.Translate.toString(transform),
-        transition,
-      }}
-      className={
-        isDragging ? "relative z-10 scale-[1.02] opacity-90 drop-shadow-2xl" : ""
-      }
-    >
+    <li ref={setNodeRef} style={style} className={className}>
       <CityCardLoader
         city={city}
-        dragHandle={{ attributes, listeners, setActivatorNodeRef }}
+        dragHandle={dragHandle}
         onDelete={onDelete}
       />
     </li>

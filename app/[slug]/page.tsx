@@ -39,29 +39,31 @@ async function CityWeather({ params }: PageProps) {
   }
 
   const weather = await fetchWeatherForecast(city.lat, city.lon);
-  const { description, isNight, gradientClasses } = getCurrentConditions(
-    weather.current,
-  );
+  const { current, daily } = weather;
+  const { description, isNight, gradientClasses } =
+    getCurrentConditions(current);
+  const Icon = getWeatherIcon(current.weatherCode);
+  const today = daily[0].date;
 
   return (
     <CityPageLayout gradientClasses={gradientClasses}>
-        <header className="flex flex-col gap-8">
-          <CityHeading
-            name={city.name}
-            date={weather.daily[0].date}
-            timezone={weather.current.timezone}
-          />
-          <CurrentWeatherSummary
-            temperature={weather.current.temperature}
-            description={description}
-            Icon={getWeatherIcon(weather.current.weatherCode)}
-            isNight={isNight}
-          />
-        </header>
+      <header className="flex flex-col gap-8">
+        <CityHeading
+          name={city.name}
+          date={today}
+          timezone={current.timezone}
+        />
+        <CurrentWeatherSummary
+          temperature={current.temperature}
+          description={description}
+          Icon={Icon}
+          isNight={isNight}
+        />
+      </header>
 
-        <DailyForecastSection days={weather.daily} />
+      <DailyForecastSection days={daily} />
 
-        <HourlyForecastSection forecast={hourlyForecastPlaceholder} />
+      <HourlyForecastSection forecast={hourlyForecastPlaceholder} />
     </CityPageLayout>
   );
 }

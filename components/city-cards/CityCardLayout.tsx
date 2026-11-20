@@ -36,6 +36,10 @@ export function CityCardLayout({
   dragHandle,
   onDelete,
 }: CityCardLayoutProps) {
+  const href = `/${slug}`;
+  const localTime = getCurrentTimeInTimezone(timezone);
+  const localTimeValue = getCurrentTimeValueInTimezone(timezone);
+
   // The grip and bin sit beside the link, not inside it, so they never
   // open the detail page
   return (
@@ -48,13 +52,11 @@ export function CityCardLayout({
     >
       <CityDragHandle name={name} dragHandle={dragHandle} />
       <CityCardBody
-        href={`/${slug}`}
+        href={href}
         title={name}
         subtitle={
           <>
-            <time dateTime={getCurrentTimeValueInTimezone(timezone)}>
-              {getCurrentTimeInTimezone(timezone)}
-            </time>
+            <time dateTime={localTimeValue}>{localTime}</time>
             {` · ${description}`}
           </>
         }

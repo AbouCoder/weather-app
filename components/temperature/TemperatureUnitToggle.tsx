@@ -8,6 +8,13 @@ import { useTemperatureUnit } from "@/context/TemperatureUnitContext";
 // position before React hydrates.
 export function TemperatureUnitToggle() {
   const { unit, setUnit } = useTemperatureUnit();
+  const isFahrenheit = unit === "fahrenheit";
+
+  const showCelsius = () => setUnit("celsius");
+  const showFahrenheit = () => setUnit("fahrenheit");
+  // The switch is on for Fahrenheit
+  const handleCheckedChange = (checked: boolean) =>
+    setUnit(checked ? "fahrenheit" : "celsius");
 
   return (
     <div className="flex items-center gap-2 text-sm font-medium text-shadow-sm">
@@ -18,16 +25,14 @@ export function TemperatureUnitToggle() {
         type="button"
         tabIndex={-1}
         aria-hidden
-        onClick={() => setUnit("celsius")}
+        onClick={showCelsius}
         className="cursor-pointer text-shadow-sm text-foreground fahrenheit:text-muted-foreground transition-colors duration-300"
       >
         °C
       </button>
       <Switch
-        checked={unit === "fahrenheit"}
-        onCheckedChange={(checked) =>
-          setUnit(checked ? "fahrenheit" : "celsius")
-        }
+        checked={isFahrenheit}
+        onCheckedChange={handleCheckedChange}
         aria-label="Show temperatures in Fahrenheit"
         className="data-[size=default]:h-6 data-[size=default]:w-10 p-0.5 data-checked:bg-glass data-unchecked:bg-glass glass-raised cursor-pointer"
         // Sized so the default checked offset (thumb width - 2px) is exactly
@@ -39,7 +44,7 @@ export function TemperatureUnitToggle() {
         type="button"
         tabIndex={-1}
         aria-hidden
-        onClick={() => setUnit("fahrenheit")}
+        onClick={showFahrenheit}
         className="cursor-pointer text-shadow-sm text-muted-foreground fahrenheit:text-foreground transition-colors duration-300"
       >
         °F

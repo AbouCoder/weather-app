@@ -15,9 +15,13 @@ const UNDO_DURATION_MS = 5000;
 export function SavedCitiesSection() {
   const { slugs, add, remove, restore, move } = useSavedCities();
 
-  const cities = (slugs ?? [])
+  // slugs is null until the saved list has loaded
+  const savedSlugs = slugs ?? [];
+  const cities = savedSlugs
     .map(getCityBySlug)
     .filter((city): city is City => city !== undefined);
+  // Only once the list has loaded, so the empty state doesn't flash first
+  const showEmptyState = slugs !== null && cities.length === 0;
 
   // Removes the city straight away and offers a few seconds to undo it
   function handleDelete(city: City) {
@@ -34,9 +38,9 @@ export function SavedCitiesSection() {
     <Section
       title="Cities"
       headingLevel="h1"
-      action={<AddCityDialog savedSlugs={slugs ?? []} onAdd={add} />}
+      action={<AddCityDialog savedSlugs={savedSlugs} onAdd={add} />}
     >
-      {slugs && cities.length === 0 ? (
+      {showEmptyState ? (
         <EmptyCitiesState onAdd={add} />
       ) : (
         <SortableCityList

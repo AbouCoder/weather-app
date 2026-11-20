@@ -34,6 +34,15 @@ export function AddCityDialog({ savedSlugs, onAdd }: AddCityDialogProps) {
 
   const unsavedCities = cities.filter((city) => !savedSlugs.includes(city.slug));
   const selectedCity = cities.find((city) => city.slug === selectedSlug);
+  const submitLabel = selectedCity ? `Add ${selectedCity.name}` : "Add city";
+
+  const options = unsavedCities.map((city) => ({
+    slug: city.slug,
+    name: city.name,
+    // Lets "sao paulo" find São Paulo
+    keywords: [city.slug.replaceAll("-", " ")],
+    isSelected: city.slug === selectedSlug,
+  }));
 
   function handleOpenChange(nextOpen: boolean) {
     setOpen(nextOpen);
@@ -76,17 +85,16 @@ export function AddCityDialog({ savedSlugs, onAdd }: AddCityDialogProps) {
                 No cities found.
               </CommandEmpty>
               <CommandGroup>
-                {unsavedCities.map((city) => (
+                {options.map((option) => (
                   <CommandItem
-                    key={city.slug}
-                    value={city.name}
-                    // Lets "sao paulo" find São Paulo
-                    keywords={[city.slug.replaceAll("-", " ")]}
-                    data-checked={city.slug === selectedSlug}
-                    onSelect={() => setSelectedSlug(city.slug)}
+                    key={option.slug}
+                    value={option.name}
+                    keywords={option.keywords}
+                    data-checked={option.isSelected}
+                    onSelect={() => setSelectedSlug(option.slug)}
                     className="data-selected:bg-glass"
                   >
-                    {city.name}
+                    {option.name}
                   </CommandItem>
                 ))}
               </CommandGroup>
@@ -100,7 +108,7 @@ export function AddCityDialog({ savedSlugs, onAdd }: AddCityDialogProps) {
               size="pill"
               disabled={!selectedCity}
             >
-              {selectedCity ? `Add ${selectedCity.name}` : "Add city"}
+              {submitLabel}
             </Button>
           </DialogFooter>
         </form>

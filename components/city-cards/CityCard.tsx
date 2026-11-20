@@ -21,6 +21,8 @@ export function CityCard({
     weather.current,
   );
 
+  const Icon = getWeatherIcon(weather.current.weatherCode);
+
   return (
     <CityCardLayout
       slug={city.slug}
@@ -29,7 +31,7 @@ export function CityCard({
       temperature={weather.current.temperature}
       timezone={weather.current.timezone}
       gradientClasses={gradientClasses}
-      Icon={getWeatherIcon(weather.current.weatherCode)}
+      Icon={Icon}
       isNight={isNight}
       dragHandle={dragHandle}
       onDelete={onDelete}
